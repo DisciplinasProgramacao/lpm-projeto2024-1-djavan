@@ -1,6 +1,3 @@
-package entities;
-
-
 import java.util.Date;
 import java.util.Objects;
 
@@ -99,7 +96,13 @@ public class Requisicao {
 	
 	// Métodos
 	public void atribuirMesa(Mesa mesa) {
-		
+		if(mesa.mesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
+            this.mesa = mesa;
+            mesa.ocupar();
+            System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " + idRequisicao);
+        } else {
+            System.out.println("Não foi possível atribuir a mesa à requisição " + idRequisicao);
+        }
 	}
 	
 	public void finalizarReq() {
