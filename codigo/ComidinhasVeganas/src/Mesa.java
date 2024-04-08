@@ -29,6 +29,10 @@ public class Mesa {
         this.idMesa = idMesa;
     }
 
+    public int getIdMesa(){
+        return idMesa;
+    }
+
     /**
     * Obtém a capacidade máxima de pessoas que a mesa pode acomodar.
     * @return A capacidade máxima.
