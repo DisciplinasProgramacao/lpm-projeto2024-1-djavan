@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
@@ -9,6 +11,7 @@ public class Requisicao {
 	private Date saidaCliente;
 	private boolean status;
 	private Cliente cliente;
+	LocalDateTime now = LocalDateTime.now();
 
 	public Requisicao() {
 	}
@@ -39,7 +42,11 @@ public class Requisicao {
 	}
 
 	public void setQtdPessoas(int qtdPessoas) {
-		this.qtdPessoas = qtdPessoas;
+		if (qtdPessoas >= 1){
+			this.qtdPessoas = qtdPessoas;
+		} else {
+			throw new Exception("Insira uma quantidade válida.");
+		}
 	}
 
 	public Date getEntradaCliente() {
@@ -55,7 +62,11 @@ public class Requisicao {
 	}
 
 	public void setSaidaCliente(Date saidaCliente) {
-		this.saidaCliente = saidaCliente;
+		if (saidaCliente.after(this.entradaCliente)){
+			this.saidaCliente = saidaCliente;
+		} else {
+			throw new Exception("Horario de saida não pode ser menor que o de entrada.");
+		}
 	}
 
 	public boolean isStatus() {
@@ -99,13 +110,19 @@ public class Requisicao {
 		if(mesa.mesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
             this.mesa = mesa;
             mesa.ocupar();
-            System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " + idRequisicao);
+            //System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " + idRequisicao); (Incluir no main após atribuir a mesa com sucesso)
         } else {
-            System.out.println("Não foi possível atribuir a mesa à requisição " + idRequisicao);
+			throw new Exception("Não foi possível atribuir a mesa à requisição {" + idRequisicao + "} mesa indisponivel.");
         }
 	}
 	
-	public void finalizarReq() {
+	// Desocupar Mesa (Saida do cliente)
+	public void finalizarReq(Mesa mesa) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy ss:mm:HH");
+
+		setSaidaCliente(dtf.format(now));
+
+		mesa.desocupar();
 		
 	}
 }
