@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
@@ -28,6 +29,58 @@ public class Main {
             Mesa mesa = mesas[i];
             System.out.println("Mesa " + mesa.getIdMesa() + " - Capacidade: " + mesa.getCapacidade() + " pessoas");
         }
+        
+        Cliente cliente = new Cliente();
+        System.out.print("Digite o ID do cliente: ");
+        int idCliente = teclado.nextInt(); // Consome o próximo inteiro como ID
+        teclado.nextLine(); // Consume a quebra de linha
+        cliente.setIdCliente(idCliente);
+        System.out.print("Digite o nome do cliente: ");
+        String nomeCliente = teclado.nextLine(); // Consome a próxima linha como nome
+        cliente.setNome(nomeCliente);
+        System.out.println("Cliente criado com sucesso: " + cliente.getNome());
+        System.out.print("Para quantas pessoas será a mesa? ");
+        int qtdPessoas = teclado.nextInt();
+
+        LocalDate entradaCliente = LocalDate.now(); // Assumimos que o cliente está entrando agora
+
+        // Inicialmente, a saída do cliente não é conhecida, então pode ser definida como null ou a data atual
+        LocalDate saidaCliente = null;
+
+        // Status da requisição - assumimos que inicialmente é false
+        boolean status = false;
+
+        Requisicao requisicao = new Requisicao(1, qtdPessoas, entradaCliente, saidaCliente, status, cliente);
+
+        // Tenta atribuir uma mesa ao cliente
+        for (Mesa mesaAtual : mesas) {
+            if (mesaAtual.getMesaEstaLivre() && mesaAtual.getCapacidade() >= qtdPessoas) {
+                requisicao.atribuirMesa(mesaAtual);
+                System.out.println("Mesa " + mesaAtual.getIdMesa() + " atribuída ao cliente " + cliente.getNome());
+                break;
+            }
+        }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         teclado.close();
     }
 }

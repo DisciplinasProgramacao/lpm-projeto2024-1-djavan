@@ -28,7 +28,11 @@ public class Mesa {
     public void setIdMesa(int idMesa) {
         this.idMesa = idMesa;
     }
-
+    
+    public int getIdMesa() {
+		// TODO Auto-generated method stub
+		return idMesa;
+	}
     /**
     * Obtém a capacidade máxima de pessoas que a mesa pode acomodar.
     * @return A capacidade máxima.
@@ -78,5 +82,7 @@ public class Mesa {
             System.out.println("A mesa foi desocupada com sucesso.");
         }
     }
+
+	
     
 }

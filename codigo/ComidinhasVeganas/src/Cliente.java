@@ -6,7 +6,10 @@ public class Cliente {
         this.idCliente = idCliente;
         this.nome = nome;
     }
-    /**
+    public Cliente() {
+		// TODO Auto-generated constructor stub
+	}
+	/**
      * Retorna o id do cliente.
      * @return id do cliente.
      */
@@ -22,5 +25,11 @@ public class Cliente {
     public String getNome() {
         return nome;
     }
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 }
