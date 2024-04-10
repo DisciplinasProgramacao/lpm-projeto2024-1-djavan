@@ -117,7 +117,7 @@ public class Requisicao {
 	}
 	
 	// Desocupar Mesa (Saida do cliente)
-	public void finalizarReq(Mesa mesa) throws Exception {
+	public static void finalizarReq(Mesa mesa) throws Exception {
 
 		setSaidaCliente(LocalDate.now());
 
