@@ -1,14 +1,14 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Objects;
 
 public class Requisicao {
 
 	private int idRequisicao;
 	private int qtdPessoas;
-	private Date entradaCliente;
-	private Date saidaCliente;
+	private LocalDate entradaCliente;
+	private LocalDate saidaCliente;
 	private boolean status;
 	private Cliente cliente;
 	LocalDateTime now = LocalDateTime.now();
@@ -16,7 +16,7 @@ public class Requisicao {
 	public Requisicao() {
 	}
 
-	public Requisicao(int idRequisicao, int qtdPessoas, Date entradaCliente, Date saidaCliente, boolean status,
+	public Requisicao(int idRequisicao, int qtdPessoas, LocalDate entradaCliente, LocalDate saidaCliente, boolean status,
 			Cliente cliente) {
 		super();
 		this.idRequisicao = idRequisicao;
@@ -41,7 +41,7 @@ public class Requisicao {
 		return qtdPessoas;
 	}
 
-	public void setQtdPessoas(int qtdPessoas) {
+	public void setQtdPessoas(int qtdPessoas) throws Exception {
 		if (qtdPessoas >= 1){
 			this.qtdPessoas = qtdPessoas;
 		} else {
@@ -49,20 +49,20 @@ public class Requisicao {
 		}
 	}
 
-	public Date getEntradaCliente() {
+	public LocalDate getEntradaCliente() {
 		return entradaCliente;
 	}
 
-	public void setEntradaCliente(Date entradaCliente) {
+	public void setEntradaCliente(LocalDate entradaCliente) {
 		this.entradaCliente = entradaCliente;
 	}
 
-	public Date getSaidaCliente() {
+	public LocalDate getSaidaCliente() {
 		return saidaCliente;
 	}
 
-	public void setSaidaCliente(Date saidaCliente) {
-		if (saidaCliente.after(this.entradaCliente)){
+	public void setSaidaCliente(LocalDate saidaCliente) throws Exception {
+		if (saidaCliente.isAfter(this.entradaCliente)){
 			this.saidaCliente = saidaCliente;
 		} else {
 			throw new Exception("Horario de saida não pode ser menor que o de entrada.");
@@ -106,10 +106,10 @@ public class Requisicao {
 
 	
 	// Métodos
-	public void atribuirMesa(Mesa mesa) {
-		if(mesa.mesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
-            this.mesa = mesa;
-            mesa.ocupar();
+	public void atribuirMesa(Mesa mesa) throws Exception {
+		if(mesa.getMesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
+			
+			mesa.ocupar();
             //System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " + idRequisicao); (Incluir no main após atribuir a mesa com sucesso)
         } else {
 			throw new Exception("Não foi possível atribuir a mesa à requisição {" + idRequisicao + "} mesa indisponivel.");
@@ -117,10 +117,9 @@ public class Requisicao {
 	}
 	
 	// Desocupar Mesa (Saida do cliente)
-	public void finalizarReq(Mesa mesa) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy ss:mm:HH");
+	public void finalizarReq(Mesa mesa) throws Exception {
 
-		setSaidaCliente(dtf.format(now));
+		setSaidaCliente(LocalDate.now());
 
 		mesa.desocupar();
 		
