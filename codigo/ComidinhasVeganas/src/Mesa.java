@@ -20,16 +20,6 @@ public class Mesa {
 	}
 
     /**
-    * Obtém o identificador único da mesa.
-    * 
-    * @return O identificador único da mesa.
-    */
-
-    public int getIdMesa() {
-        return idMesa;
-    }
-
-    /**
     * Define o identificador único da mesa.
     * 
     * @param idMesa O identificador único da mesa.
@@ -45,14 +35,6 @@ public class Mesa {
     */
     public int getCapacidade() {
         return capacidade;
-    }
-
-    /**
-    * Define a capcidade máxima de pessoas que a mesa pode acomodar.
-    * @param capacidade A capacidade máxima de pessoas que a mesa pode acomodar.
-    */
-    public void setCapacidade(int capacidade) {
-        this.capacidade = capacidade;
     }
 
     /**
