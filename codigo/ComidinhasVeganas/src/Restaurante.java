@@ -33,11 +33,11 @@ public class Restaurante {
         Mesa mesaRequisicao = buscarMesa(qtdPessoas);
         
         if (mesaRequisicao == null) {
-            Requisicao requisicao = new Requisicao(cliente, qtdPessoas); // requisicao aberta porem sem o horario
-            fila.add(cliente, qtdPessoas);
+            Requisicao requisicao = new Requisicao(cliente, qtdPessoas); // requisicao aberta porem sem o horario cliente, qtdPessoas
+            fila.add(cliente);
         }else{
             Requisicao requisicao = new Requisicao(cliente, qtdPessoas, horarioentrada); // na teoria o criaria a requisicao passando somente o objeto cliente e o numero de pessoas mas o construtor esta com o id e hora de entrada sendo q sao coisas alto geradas
-            mesaRequisicao.setMesaEstaLivre(false);
+            mesaRequisicao.ocupar();
             requisicoesAtendidas.add(requisicao);
         }
     }
@@ -47,8 +47,8 @@ public class Restaurante {
        // tem que ter o atributo Mesa porque se n n tem como trocar o status da mesa 
        requisicao.finalizarReq(null);; // nao sei=
        for(int i = 0; i < requisicoesAtendidas.size(); i++){
-            if (requisicoesAtendidas[i].getIdRequisicao == requisicao.getIdRequisicao()) {
-                pedidosFechados.add(requisicoesAtendidas[i]);
+            if (requisicoesAtendidas.get(i).getIdRequisicao() == requisicao.getIdRequisicao()) {
+                pedidosFechados.add(requisicoesAtendidas.get(i));
                 requisicoesAtendidas.remove(i)
                 break;
             }
@@ -56,10 +56,12 @@ public class Restaurante {
 
     }
 
-    public Mesa verificarFilaEspera(int qtdPessoas){// nao sei como aplicar mas sei que precisa existir
-        for(int i = 0; i < fila.size(); i++){
-            if(fila[i].qtdPessoas == qtdPessoas){
-                abrirRequisicao(null, qtdPessoas) // n sei provavelmente q tenho q criar uma outra classe pra receber a requisicao nao sei como fazer
+    public Mesa verificarFilaEspera(Mesa mesa ){// nao sei como aplicar mas sei que precisa existir
+          for(int i = 0; i < fila.size(); i++){
+            Requisicao requisicaoAtual = fila.get(i);
+            if(requisicaoAtual.getQtdPessoas() <= mesa.getCapacidade()){
+                requisicaoAtual.atribuirMesa(mesa); // n sei provavelmente q tenho q criar uma outra classe pra receber a requisicao nao sei como fazer
+                fila.remove(requisicaoAtual);
             } 
         }
         return null;
