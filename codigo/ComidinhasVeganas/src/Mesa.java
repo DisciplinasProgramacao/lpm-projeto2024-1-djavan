@@ -28,22 +28,24 @@ public class Mesa {
     public int getIdMesa() {
         return idMesa;
     }
-<<<<<<< HEAD
-    
-    public int getIdMesa() {
-		// TODO Auto-generated method stub
-		return idMesa;
-	}
-=======
 
 
->>>>>>> e120bb024f385c7dd150b2605143fc3bae406fa3
     /**
     * Obtém a capacidade máxima de pessoas que a mesa pode acomodar.
     * @return A capacidade máxima.
     */
     public int getCapacidade() {
         return capacidade;
+    }
+
+
+    /**
+    * Define se a mesa está livre ou ocupada.
+    * 
+    * @param mesaEstaLivre true se a mesa estiver livre, caso contrário false.
+    */
+    public void setMesaEstaLivre(boolean mesaEstaLivre) {
+        this.mesaEstaLivre = mesaEstaLivre;
     }
 
     /**
@@ -69,7 +71,5 @@ public class Mesa {
             System.out.println("A mesa foi desocupada com sucesso.");
         }
     }
-
-	
     
 }
