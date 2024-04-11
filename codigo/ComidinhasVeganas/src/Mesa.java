@@ -49,6 +49,15 @@ public class Mesa {
     }
 
     /**
+    * Verifica se a mesa está livre.
+    * 
+    * @return true se a mesa estiver livre, caso contrário false.
+    */
+    public boolean getMesaEstaLivre() {
+        return mesaEstaLivre;
+    }
+
+    /**
     * Método para ocupar a mesa.
     */
     public void ocupar(){
