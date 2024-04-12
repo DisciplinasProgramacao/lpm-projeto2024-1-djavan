@@ -1,5 +1,3 @@
-import java.util.Date;
-
 public class Mesa {
     private int idMesa;
     private int capacidade;
