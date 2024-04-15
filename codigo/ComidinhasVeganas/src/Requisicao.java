@@ -17,18 +17,18 @@ public class Requisicao {
 	public Requisicao() {
 	}
 
-	public Requisicao(int idRequisicao, int qtdPessoas, LocalDate entradaCliente, LocalDate saidaCliente, boolean status,
-			Cliente cliente) {
-		super();
-		this.idRequisicao = idRequisicao;
+	public Requisicao(int qtdPessoas, Cliente cliente) {
 		this.qtdPessoas = qtdPessoas;
-		this.entradaCliente = entradaCliente;
-		this.saidaCliente = saidaCliente;
-		this.status = status;
 		this.cliente = cliente;
 	}
 
-	
+	public Requisicao(int qtdPessoas, LocalDate entradaCliente, Cliente cliente, Mesa mesa) {
+		this.qtdPessoas = qtdPessoas;
+		this.entradaCliente = entradaCliente;
+		this.cliente = cliente;
+		this.mesa = mesa;
+	}
+
 	// GETTERS E SETTERS
 	public int getIdRequisicao() {
 		return idRequisicao;
@@ -43,9 +43,9 @@ public class Requisicao {
 	}
 
 	public void setQtdPessoas(int qtdPessoas) {
-		if (qtdPessoas >= 1){
+		if (qtdPessoas >= 1) {
 			this.qtdPessoas = qtdPessoas;
-		} 
+		}
 	}
 
 	public LocalDate getEntradaCliente() {
@@ -61,9 +61,9 @@ public class Requisicao {
 	}
 
 	public void setSaidaCliente(LocalDate saidaCliente) {
-		if (saidaCliente.isAfter(this.entradaCliente)){
+		if (saidaCliente.isAfter(this.entradaCliente)) {
 			this.saidaCliente = saidaCliente;
-		} 
+		}
 	}
 
 	public boolean isStatus() {
@@ -82,8 +82,15 @@ public class Requisicao {
 		this.cliente = cliente;
 	}
 
-	
-	//HASHCODE E EQUALS APENAS COM idRequisição para utilizar de comparação
+	public Mesa getMesa() {
+		return mesa;
+	}
+
+	public void setMesa(Mesa mesa) {
+		this.mesa = mesa;
+	}
+
+	// HASHCODE E EQUALS APENAS COM idRequisição para utilizar de comparação
 	@Override
 	public int hashCode() {
 		return Objects.hash(idRequisicao);
@@ -101,22 +108,22 @@ public class Requisicao {
 		return idRequisicao == other.idRequisicao;
 	}
 
-	
 	// Métodos
 	public void atribuirMesa(Mesa mesa) {
-		if(mesa.getMesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
-			
+		if (mesa.getMesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
+
 			mesa.ocupar();
-            //System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " + idRequisicao); (Incluir no main após atribuir a mesa com sucesso)
-        } 
+			// System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " +
+			// idRequisicao); (Incluir no main após atribuir a mesa com sucesso)
+		}
 	}
-	
+
 	// Desocupar Mesa (Saida do cliente)
-	public void finalizarReq(Mesa mesa){
+	public void finalizarReq(Mesa mesa) {
 
 		setSaidaCliente(LocalDate.now());
 
 		mesa.desocupar();
-		
+
 	}
 }
