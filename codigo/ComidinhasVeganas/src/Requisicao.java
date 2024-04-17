@@ -113,8 +113,6 @@ public class Requisicao {
 		if (mesa.getMesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
 
 			mesa.ocupar();
-			// System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " +
-			// idRequisicao); (Incluir no main após atribuir a mesa com sucesso)
 		}
 	}
 
