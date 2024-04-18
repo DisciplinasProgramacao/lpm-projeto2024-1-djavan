@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.format.DateTimeFormatter;
 
 public class Restaurante {
     private ArrayList<Mesa> listaMesa = new ArrayList<>(10);
@@ -22,7 +21,7 @@ public class Restaurante {
         listaMesa.add(new Mesa(10, 8, true));
     }
 
-     /**
+    /**
     * @param qtdPessoas - busca se a mesa com a quantidade de cadeiras que o cliente precisa esta livre
     * @return caso a a mesa esteja livre retorna a mesa caso nao retorna null
     */
@@ -39,52 +38,46 @@ public class Restaurante {
      * @param qtdPessoas - para buscar se a mesa que o cliente deseja esta livre
      * @return retorna a requisicao criada
      */
-    public Requisicao abrirRequisicao(Cliente cliente, int qtdPessoas){
+    public void abrirRequisicao(Cliente cliente, int qtdPessoas){
         Mesa mesaRequisicao = buscarMesa(qtdPessoas);
         
         if (mesaRequisicao == null) {
-            Requisicao requisicao = new Requisicao(qtdPessoas, cliente); // requisicao aberta porem sem o horario cliente, qtdPessoas
+            Requisicao requisicao = new Requisicao(qtdPessoas, cliente); 
             fila.add(requisicao);
         }else{
             LocalDate entradaCliente = LocalDate.now();
-            Requisicao requisicao = new Requisicao(qtdPessoas, entradaCliente, cliente, mesaRequisicao); // na teoria o criaria a requisicao passando somente o objeto cliente e o numero de pessoas mas o construtor esta com o id e hora de entrada sendo q sao coisas alto geradas
+            Requisicao requisicao = new Requisicao(qtdPessoas, entradaCliente, cliente, mesaRequisicao); 
             mesaRequisicao.ocupar();
             requisicoesAtendidas.add(requisicao);
         }
-        return null; // ainda nao sei o que retornar
     }
 
     /**
-     * 
-     * @param requisicao - passa a requisicao para metodo consigar chamar 
-     * o metodo da classe requisicao para fechar trocar o status da mesa para ocupada
+     * @param requisicao - passa o parametro requisicao fechar o pedido
+     * @implNote Chama o metodo da classe requisicao para fechar trocar o status da mesa para ocupada depois chama o metodo verificarFilaEspera para verificar a fila de espera
      */
     public void finalizarReq(Requisicao requisicao) {
-       requisicao.finalizarReq(null);; // nao sei=
        for(int i = 0; i < requisicoesAtendidas.size(); i++){
             if (requisicoesAtendidas.get(i).getIdRequisicao() == requisicao.getIdRequisicao()) {
                 pedidosFechados.add(requisicoesAtendidas.get(i));
                 requisicoesAtendidas.remove(i);
+                requisicao.finalizarReq(requisicao.getMesa());
                 break;
             }
        }
-
+       verificarFilaEspera();
     }
 
-    /**
-     * 
-     * @param mesa - passa a mesa como parametro para que possa verificar se na fila de espera alguma pessoa se adequa a mesa que ficou vazia
-     * @return caso ache algum cliente que possa sair da fila de espera ela retorna a requisicao do cliente
-     */
-    public Mesa verificarFilaEspera(Mesa mesa ){
-          for(int i = 0; i < fila.size(); i++){
+    /**    
+     * @implNote Apos Finalizar a requisicao esse metodo e chamado para verificar se na lista de espera algum cliente corresponde a mesa que ficou vazia
+    */
+    public void verificarFilaEspera(){
+        for(int i = 0; i < fila.size(); i++){
             Requisicao requisicaoAtual = fila.get(i);
-            if(requisicaoAtual.getQtdPessoas() <= mesa.getCapacidade()){
-                requisicaoAtual.atribuirMesa(mesa); 
-                fila.remove(requisicaoAtual);
-            } 
+            Mesa mesa = buscarMesa(requisicaoAtual.getQtdPessoas());
+            if(mesa == null) break;
+            abrirRequisicao(requisicaoAtual.getCliente(), requisicaoAtual.getQtdPessoas());
         }
-        return null;
     }
 
     public List<Requisicao> getRequisicoesAguardando() {
