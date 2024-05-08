@@ -61,7 +61,7 @@ public class Main {
                     fecharMesa(mesas); // Fechar uma mesa
                     break;
                 case 4:
-                    // Opção em branco 1
+                    criarCliente(teclado); //cria um novo cliente com id
                     break;
                 case 5:
                     // Opção em branco 2
@@ -121,7 +121,7 @@ public class Main {
         System.out.println("1. Abrir Mesa");
         System.out.println("2. Finalizar Requisição");
         System.out.println("3. Fechar Mesa");
-        System.out.println("4. Opção em branco");
+        System.out.println("4. Criar Cliente");
         System.out.println("5. Opção em branco");
         System.out.println("6. Opção em branco");
         System.out.println("0. Sair");
