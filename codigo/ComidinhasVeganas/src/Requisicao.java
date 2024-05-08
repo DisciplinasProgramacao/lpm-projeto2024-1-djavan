@@ -29,7 +29,12 @@ public class Requisicao {
 		this.mesa = mesa;
 	}
 
-	// GETTERS E SETTERS
+	public Requisicao(int i, int qtdPessoas2, LocalDate entradaCliente2, LocalDate saidaCliente2, boolean status2,
+            Cliente cliente2) {
+        //TODO Auto-generated constructor stub
+    }
+
+    // GETTERS E SETTERS
 	public int getIdRequisicao() {
 		return idRequisicao;
 	}
