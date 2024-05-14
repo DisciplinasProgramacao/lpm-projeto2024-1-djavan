@@ -22,7 +22,7 @@ public class Main {
             if (mesaAtual.getMesaEstaLivre() && mesaAtual.getCapacidade() >= qtdPessoas) {
                 requisicao.atribuirMesa(mesaAtual);
                 requisicao.setMesa(mesaAtual); // Atribui a mesa à requisição
-                System.out.println("Mesa " + mesaAtual.getIdMesa() + " atribuída ao cliente " + Cliente.getNome());
+                System.out.println("Mesa " + mesaAtual.getIdMesa() + " atribuída ao cliente " + cliente.getNome());
                 break;
             }
         }
