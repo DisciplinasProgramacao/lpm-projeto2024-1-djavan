@@ -6,39 +6,23 @@ public class Main {
 
         Scanner teclado = new Scanner(System.in);
 
-        // Pergunta ao usuário quantas mesas existem no restaurante
-        System.out.print("Quantas mesas existem no restaurante? ");
-        int numMesas = teclado.nextInt();
-
-        // Cria um array de objetos Mesa com o tamanho fornecido pelo usuário
-        Mesa[] mesas = new Mesa[numMesas];
-
-        // Preenche as informações de cada mesa
-        for (int i = 0; i < numMesas; i++) {
-            System.out.println("\nMesa " + (i + 1));
-            System.out.print("Capacidade da mesa: ");
-            int capacidade = teclado.nextInt();
-
-            // Cria a mesa com o ID correspondente a (i + 1)
-            mesas[i] = new Mesa(i + 1, capacidade, true);
-        }
-
+        Mesa[] mesas = new Mesa[0];
+        
         Cliente cliente = criarCliente(teclado);
-
         int qtdPessoas = solicitarQuantidadePessoas(teclado);
 
         // Inicializa a requisição do cliente
         LocalDate entradaCliente = LocalDate.now();
         LocalDate saidaCliente = null; // A data de saída ainda é indefinida
         boolean status = false; // A requisição inicia como não finalizada
-        Requisicao requisicao = new Requisicao(1, qtdPessoas, entradaCliente, saidaCliente, status, cliente);
+        Requisicao requisicao = new Requisicao(1, qtdPessoas, entradaCliente, saidaCliente, status, null);
 
         // Tenta atribuir uma mesa ao cliente
         for (Mesa mesaAtual : mesas) {
             if (mesaAtual.getMesaEstaLivre() && mesaAtual.getCapacidade() >= qtdPessoas) {
                 requisicao.atribuirMesa(mesaAtual);
                 requisicao.setMesa(mesaAtual); // Atribui a mesa à requisição
-                System.out.println("Mesa " + mesaAtual.getIdMesa() + " atribuída ao cliente " + cliente.getNome());
+                System.out.println("Mesa " + mesaAtual.getIdMesa() + " atribuída ao cliente " + Cliente.getNome());
                 break;
             }
         }
@@ -52,7 +36,7 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    abrirMesa(mesas); // Adicionar novas mesas
+                    mesas = abrirMesa(teclado); // Adicionar novas mesas
                     break;
                 case 2:
                     finalizarRequisicao(requisicao); // Finaliza a requisição e desocupa a mesa
@@ -61,7 +45,7 @@ public class Main {
                     fecharMesa(mesas); // Fechar uma mesa
                     break;
                 case 4:
-                    // Opção em branco 1
+                    cliente = criarCliente(teclado);
                     break;
                 case 5:
                     // Opção em branco 2
@@ -77,7 +61,7 @@ public class Main {
             }
         } while (opcao != 0);
 
-        teclado.close();
+        
     }
 
     public static Cliente criarCliente(Scanner teclado) {
@@ -98,8 +82,25 @@ public class Main {
         return teclado.nextInt();
     }
 
-    public static void abrirMesa(Mesa[] mesas) {
-        System.out.println("Abertura de mesa ainda não implementada.");
+    public static Mesa[] abrirMesa(Scanner teclado) {
+
+         // Pergunta ao usuário quantas mesas existem no restaurante
+         System.out.print("Quantas mesas existem no restaurante? ");
+         int numMesas = teclado.nextInt();
+ 
+         // Cria um array de objetos Mesa com o tamanho fornecido pelo usuário
+         Mesa[] mesas = new Mesa[numMesas];
+ 
+         // Preenche as informações de cada mesa
+         for (int i = 0; i < numMesas; i++) {
+             System.out.println("\nMesa " + (i + 1));
+             System.out.print("Capacidade da mesa: ");
+             int capacidade = teclado.nextInt();
+ 
+             // Cria a mesa com o ID correspondente a (i + 1)
+             mesas[i] = new Mesa(i + 1, capacidade, true);
+         }
+         return mesas;
     }
 
     public static void finalizarRequisicao(Requisicao requisicao) {
@@ -121,7 +122,7 @@ public class Main {
         System.out.println("1. Abrir Mesa");
         System.out.println("2. Finalizar Requisição");
         System.out.println("3. Fechar Mesa");
-        System.out.println("4. Opção em branco");
+        System.out.println("4. Criar Cliente");
         System.out.println("5. Opção em branco");
         System.out.println("6. Opção em branco");
         System.out.println("0. Sair");
