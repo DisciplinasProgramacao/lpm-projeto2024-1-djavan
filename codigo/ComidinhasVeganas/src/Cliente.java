@@ -1,19 +1,17 @@
+import java.util.UUID;
 public class Cliente {
-    private int idCliente;
+    private UUID idCliente;
     private String nome;
-
-    public Cliente(int idCliente, String nome) {
-        this.idCliente = idCliente;
-        this.nome = nome;
+    
+    // construtor default
+    public Cliente() {  
     }
-    public Cliente() {
-		// TODO Auto-generated constructor stub
-	}
+
 	/**
      * Retorna o id do cliente.
      * @return id do cliente.
      */
-    public int getIdCliente() {
+    public UUID getIdCliente() {
         return idCliente;
 
     }
@@ -25,7 +23,7 @@ public class Cliente {
     public String getNome() {
         return nome;
     }
-	public void setIdCliente(int idCliente) {
+	public void setIdCliente(UUID idCliente) {
 		this.idCliente = idCliente;
 	}
 	public void setNome(String nome) {
