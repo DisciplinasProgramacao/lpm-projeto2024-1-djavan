@@ -1,15 +1,16 @@
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
 
         Scanner teclado = new Scanner(System.in);
-
+        Cliente Luisa = new Cliente();
         Mesa[] mesas = new Mesa[0];
         
         Cliente cliente = criarCliente(teclado);
+        Cliente Laura = criarCliente(teclado);
+        Cliente Joao = criarCliente(teclado);
         int qtdPessoas = solicitarQuantidadePessoas(teclado);
 
         // Inicializa a requisição do cliente
@@ -66,15 +67,15 @@ public class Main {
     }
     public static Cliente criarCliente(Scanner teclado) {
         Cliente cliente = new Cliente();
+        int idCliente = cliente.getIdCliente();
+        idCliente++;
         System.out.print("Digite o nome do cliente: ");
         String nomeCliente = teclado.nextLine();
         cliente.setNome(nomeCliente);
         System.out.println("Gerando Id do cliente... ");
-        UUID idCliente = UUID.randomUUID();
-        System.out.println("O id do cliente é " + idCliente);
-        cliente.setIdCliente(idCliente);
-        
-        System.out.println("Cliente criado com sucesso: " + cliente.getNome());
+        System.out.println("O id do cliente é " + cliente.getIdCliente());
+       // cliente.setIdCliente(cliente.getIdCliente());
+        System.out.println("Cliente criado com sucesso: " + idCliente);
         return cliente;
     }
 
