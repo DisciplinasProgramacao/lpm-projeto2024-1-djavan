@@ -27,15 +27,18 @@ public class Mesa {
         return idMesa;
     }
 
-
-    /**
-    * Obtém a capacidade máxima de pessoas que a mesa pode acomodar.
-    * @return A capacidade máxima.
-    */
-    public int getCapacidade() {
-        return capacidade;
+/**
+ * Determina se a mesa pode ser ocupada, dada uma quantidade de pessoas. Para a mesa ser ocupada, ela precisa estar livre e sua capacidade precisa ser suficiente.
+ * @param quantidadePessoas quantidade de pessoas que desejam sentar na mesa.
+ * @return true se a mesa puder ser ocupada (atendendo ao critério de estar livre e ter capacidade suficiente), caso contrário false.
+ */
+    public boolean mesaPodeSerOcupada(int quantidadePessoas){
+        if ((mesaEstaLivre == true) && (capacidade >= quantidadePessoas)){
+            return true;
+        } else {
+            return false;
+        }
     }
-
 
     /**
     * Define se a mesa está livre ou ocupada.
@@ -47,36 +50,23 @@ public class Mesa {
     }
 
     /**
-    * Verifica se a mesa está livre.
-    * 
-    * @return true se a mesa estiver livre, caso contrário false.
-    */
-    public boolean getMesaEstaLivre() {
-        return mesaEstaLivre;
-    }
-
-    /**
     * Método para ocupar a mesa.
     */
-    public void ocupar(){
-        if (mesaEstaLivre == false) {
-            System.out.println("Esta mesa já está ocupada.");
-        } else {
+    public boolean ocupar(){
+        if (mesaEstaLivre == true) {
             mesaEstaLivre = false;
-            System.out.println("A mesa foi ocupada com sucesso.");
         }
+            return mesaEstaLivre;
     }
 
     /**
     * Método para desocupar a mesa.
     */
-    public void desocupar(){
-        if (mesaEstaLivre == true) {
-            System.out.println("Esta mesa já está livre.");
-        } else {
+    public boolean desocupar(){
+        if (mesaEstaLivre == false) {
             mesaEstaLivre = true;
-            System.out.println("A mesa foi desocupada com sucesso.");
         }
+            return mesaEstaLivre;
     }
     
 }
