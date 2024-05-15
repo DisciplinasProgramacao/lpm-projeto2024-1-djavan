@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Requisicao {
@@ -10,8 +11,11 @@ public class Requisicao {
 	private LocalDate entradaCliente;
 	private LocalDate saidaCliente;
 	private boolean status;
+
 	private Cliente cliente;
 	private Mesa mesa;
+	private List<Pedido> pedidos = new ArrayList();
+
 	LocalDateTime now = LocalDateTime.now();
 
 	public Requisicao() {
@@ -30,11 +34,11 @@ public class Requisicao {
 	}
 
 	public Requisicao(int i, int qtdPessoas2, LocalDate entradaCliente2, LocalDate saidaCliente2, boolean status2,
-            Cliente cliente2) {
-        //TODO Auto-generated constructor stub
-    }
+			Cliente cliente2) {
+		// TODO Auto-generated constructor stub
+	}
 
-    // GETTERS E SETTERS
+	// GETTERS E SETTERS
 	public int getIdRequisicao() {
 		return idRequisicao;
 	}
@@ -93,6 +97,23 @@ public class Requisicao {
 
 	public void setMesa(Mesa mesa) {
 		this.mesa = mesa;
+	}
+
+	public void adicionarPedido(Produtos produto) {
+		Pedido pedido = new Pedido(produto);
+		pedidos.add(pedido);
+	}
+
+	public double calcularValorTotal() {
+		double total = 0.0;
+		for (Pedido pedido : pedidos) {
+			total += pedido.getValor();
+		}
+		return total;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	// HASHCODE E EQUALS APENAS COM idRequisição para utilizar de comparação
