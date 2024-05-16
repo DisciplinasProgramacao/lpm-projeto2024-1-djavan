@@ -1,3 +1,4 @@
+package djavan.demo.models;
 import java.util.UUID;
 public class Cliente {
     private UUID idCliente;
