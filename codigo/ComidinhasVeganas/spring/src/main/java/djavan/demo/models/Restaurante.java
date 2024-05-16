@@ -1,3 +1,4 @@
+package djavan.demo.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class Restaurante {
      * @param qtdPessoas - para buscar se a mesa que o cliente deseja esta livre
      * @return retorna a requisicao criada
      */
-    public void abrirRequisicao(Cliente cliente, int qtdPessoas){
+    public Requisicao abrirRequisicao(Cliente cliente, int qtdPessoas){
         Mesa mesaRequisicao = buscarMesa(qtdPessoas);
         
         if (mesaRequisicao == null) {
@@ -46,17 +47,18 @@ public class Restaurante {
             fila.add(requisicao);
         }else{
             LocalDate entradaCliente = LocalDate.now();
-            Requisicao requisicao = new Requisicao(qtdPessoas, entradaCliente, cliente, mesaRequisicao); 
+            Requisicao requisicao = new Requisicao(qtdPessoas, cliente, mesaRequisicao); 
             mesaRequisicao.ocupar();
             requisicoesAtendidas.add(requisicao);
         }
+        return requisicao;
     }
 
     /**
      * @param requisicao - passa o parametro requisicao fechar o pedido
      * @implNote Chama o metodo da classe requisicao para fechar trocar o status da mesa para ocupada depois chama o metodo verificarFilaEspera para verificar a fila de espera
      */
-    public void finalizarReq(Requisicao requisicao) {
+    public Requisicao finalizarReq(Requisicao requisicao) {
        for(int i = 0; i < requisicoesAtendidas.size(); i++){
             if (requisicoesAtendidas.get(i).getIdRequisicao() == requisicao.getIdRequisicao()) {
                 pedidosFechados.add(requisicoesAtendidas.get(i));
@@ -66,6 +68,7 @@ public class Restaurante {
             }
        }
        verificarFilaEspera();
+       return requisicao;
     }
 
     /**    
@@ -76,7 +79,7 @@ public class Restaurante {
             Requisicao requisicaoAtual = fila.get(i);
             Mesa mesa = buscarMesa(requisicaoAtual.getQtdPessoas());
             if(mesa == null) break;
-            abrirRequisicao(requisicaoAtual.getCliente(), requisicaoAtual.getQtdPessoas());
+                abrirRequisicao(requisicaoAtual.getCliente(), requisicaoAtual.getQtdPessoas());
         }
     }
 

@@ -1,3 +1,5 @@
+package djavan.demo.models;
+
 public class Mesa {
     private int idMesa;
     private int capacidade;

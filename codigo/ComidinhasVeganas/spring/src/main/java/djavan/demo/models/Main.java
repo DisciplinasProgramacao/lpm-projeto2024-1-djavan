@@ -1,3 +1,4 @@
+package djavan.demo.models;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.UUID;
