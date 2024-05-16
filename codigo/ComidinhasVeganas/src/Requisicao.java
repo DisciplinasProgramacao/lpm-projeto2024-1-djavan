@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Requisicao {
@@ -10,24 +11,33 @@ public class Requisicao {
 	private LocalDate entradaCliente;
 	private LocalDate saidaCliente;
 	private boolean status;
+
 	private Cliente cliente;
+	private Mesa mesa;
+	private List<Pedido> pedidos = new ArrayList();
+
 	LocalDateTime now = LocalDateTime.now();
 
 	public Requisicao() {
 	}
 
-	public Requisicao(int idRequisicao, int qtdPessoas, LocalDate entradaCliente, LocalDate saidaCliente, boolean status,
-			Cliente cliente) {
-		super();
-		this.idRequisicao = idRequisicao;
+	public Requisicao(int qtdPessoas, Cliente cliente) {
 		this.qtdPessoas = qtdPessoas;
-		this.entradaCliente = entradaCliente;
-		this.saidaCliente = saidaCliente;
-		this.status = status;
 		this.cliente = cliente;
 	}
 
-	
+	public Requisicao(int qtdPessoas, LocalDate entradaCliente, Cliente cliente, Mesa mesa) {
+		this.qtdPessoas = qtdPessoas;
+		this.entradaCliente = entradaCliente;
+		this.cliente = cliente;
+		this.mesa = mesa;
+	}
+
+	public Requisicao(int i, int qtdPessoas2, LocalDate entradaCliente2, LocalDate saidaCliente2, boolean status2,
+			Cliente cliente2) {
+		// TODO Auto-generated constructor stub
+	}
+
 	// GETTERS E SETTERS
 	public int getIdRequisicao() {
 		return idRequisicao;
@@ -41,11 +51,9 @@ public class Requisicao {
 		return qtdPessoas;
 	}
 
-	public void setQtdPessoas(int qtdPessoas) throws Exception {
-		if (qtdPessoas >= 1){
+	public void setQtdPessoas(int qtdPessoas) {
+		if (qtdPessoas >= 1) {
 			this.qtdPessoas = qtdPessoas;
-		} else {
-			throw new Exception("Insira uma quantidade válida.");
 		}
 	}
 
@@ -61,11 +69,9 @@ public class Requisicao {
 		return saidaCliente;
 	}
 
-	public void setSaidaCliente(LocalDate saidaCliente) throws Exception {
-		if (saidaCliente.isAfter(this.entradaCliente)){
+	public void setSaidaCliente(LocalDate saidaCliente) {
+		if (saidaCliente.isAfter(this.entradaCliente)) {
 			this.saidaCliente = saidaCliente;
-		} else {
-			throw new Exception("Horario de saida não pode ser menor que o de entrada.");
 		}
 	}
 
@@ -85,8 +91,32 @@ public class Requisicao {
 		this.cliente = cliente;
 	}
 
-	
-	//HASHCODE E EQUALS APENAS COM idRequisição para utilizar de comparação
+	public Mesa getMesa() {
+		return mesa;
+	}
+
+	public void setMesa(Mesa mesa) {
+		this.mesa = mesa;
+	}
+
+	public void adicionarPedido(Produtos produto) {
+		Pedido pedido = new Pedido(produto);
+		pedidos.add(pedido);
+	}
+
+	public double calcularValorTotal() {
+		double total = 0.0;
+		for (Pedido pedido : pedidos) {
+			total += pedido.getValor();
+		}
+		return total;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	// HASHCODE E EQUALS APENAS COM idRequisição para utilizar de comparação
 	@Override
 	public int hashCode() {
 		return Objects.hash(idRequisicao);
@@ -104,25 +134,20 @@ public class Requisicao {
 		return idRequisicao == other.idRequisicao;
 	}
 
-	
 	// Métodos
-	public void atribuirMesa(Mesa mesa) throws Exception {
-		if(mesa.getMesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
-			
+	public void atribuirMesa(Mesa mesa) {
+		if (mesa.getMesaEstaLivre() && mesa.getCapacidade() >= this.qtdPessoas) {
+
 			mesa.ocupar();
-            //System.out.println("Mesa " + mesa.getIdMesa() + " atribuída à requisição " + idRequisicao); (Incluir no main após atribuir a mesa com sucesso)
-        } else {
-			throw new Exception("Não foi possível atribuir a mesa à requisição {" + idRequisicao + "} mesa indisponivel.");
-        }
+		}
 	}
-	
+
 	// Desocupar Mesa (Saida do cliente)
-	public void finalizarReq(Mesa mesa) throws Exception {
+	public void finalizarReq(Mesa mesa) {
 
 		setSaidaCliente(LocalDate.now());
 
 		mesa.desocupar();
-		
+
 	}
 }
-
