@@ -28,12 +28,14 @@ public class Requisicao {
 
 	public Requisicao() {
 	}
-
+	
+	//Construtor do objeto requisicao (parametros qtdPessoas e cliente)
 	public Requisicao(int qtdPessoas, Cliente cliente) {
 		this.qtdPessoas = qtdPessoas;
 		this.cliente = cliente;
 	}
 
+	//Construtor do objeto requisicao (parametros qtdPessoas, entradaCliente, cliente, mesa)
 	public Requisicao(int qtdPessoas, LocalDate entradaCliente, Cliente cliente, Mesa mesa) {
 		this.qtdPessoas = qtdPessoas;
 		this.entradaCliente = entradaCliente;
@@ -41,12 +43,13 @@ public class Requisicao {
 		this.mesa = mesa;
 	}
 
+	//Construtor do objeto requisicao (parametros i, qtdPessoas2, entradaCliente2, saidaCliente2, status2, cliente2)
 	public Requisicao(int i, int qtdPessoas2, LocalDate entradaCliente2, LocalDate saidaCliente2, boolean status2,
 			Cliente cliente2) {
 		// TODO Auto-generated constructor stub
 	}
 
-	// GETTERS E SETTERS
+	// comeco getters e setters
 	public Long getIdRequisicao() {
 		return idRequisicao;
 	}
@@ -106,12 +109,19 @@ public class Requisicao {
 	public void setMesa(Mesa mesa) {
 		this.mesa = mesa;
 	}
-
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+	//fim getters e setters
+	
+	//Metodo para adicionar pedido
 	public void adicionarPedido(Cardapio cardapio) {
 		Pedido pedido = new Pedido(cardapio);
 		pedidos.add(pedido);
 	}
 
+	//Metodo para calcular valor total do pedido
 	public double calcularValorTotal() {
 		double total = 0.0;
 		for (Pedido pedido : pedidos) {
@@ -120,16 +130,14 @@ public class Requisicao {
 		return total;
 	}
 
-	public List<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	// HASHCODE E EQUALS APENAS COM idRequisição para utilizar de comparação
+	
+	//Metodo para retornar o idRequisicao com Hash
 	@Override
 	public int hashCode() {
 		return Objects.hash(idRequisicao);
 	}
 
+	//Metodo de comparação do idRequisicao
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -142,14 +150,14 @@ public class Requisicao {
 		return idRequisicao == other.idRequisicao;
 	}
 
-	// Métodos
+	//Metodo para ocupar mesa
 	public void atribuirMesa(Mesa mesa) {
 		if (mesa.mesaPodeSerOcupada) {
 			mesa.ocupar();
 		}
 	}
 
-	// Desocupar Mesa (Saida do cliente)
+	//Metodo para desocupar mesa
 	public void finalizarReq(Mesa mesa) {
 
 		setSaidaCliente(LocalDate.now());
