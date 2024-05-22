@@ -1,11 +1,7 @@
 package djavan.demo.models;
-import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,7 +20,7 @@ import jakarta.persistence.Table;
         String nome;
 
     
-        public interface CreateClient {}
+        public interface CreateCliente {}
         public interface UpdateCliente {}
     
         public static final String TABLE_NAME = "cliente";
@@ -37,18 +33,29 @@ import jakarta.persistence.Table;
         private Long id;
     
         @Column(name = "nome", length = 100, nullable = false, unique = true)
-        @NotNull(groups = CreateClient.class)
-        @NotEmpty(groups = CreateClient.class) 
-        @Size(groups = CreateClient.class, min = 2, max = 100)
+        @NotNull(groups = CreateCliente.class)
+        @NotEmpty(groups = CreateCliente.class) 
+        @Size(groups = CreateCliente.class, min = 2, max = 100)
         private String nomeCliente;
     
 
     public String getNome() {
         return nome;
     }
+
+    public Long getId() {
+        return id;
+    }
+
 	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
 
 }

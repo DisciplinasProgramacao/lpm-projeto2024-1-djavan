@@ -2,6 +2,8 @@ package djavan.demo.models;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -17,11 +19,11 @@ public class Main {
         LocalDate entradaCliente = LocalDate.now();
         LocalDate saidaCliente = null; // A data de saída ainda é indefinida
         boolean status = false; // A requisição inicia como não finalizada
-        Requisicao requisicao = new Requisicao(1, qtdPessoas, entradaCliente, saidaCliente, status, null);
+        Requisicao requisicao = new Requisicao(int qtdPessoas, Cliente cliente, Mesa mesa);
 
         // Tenta atribuir uma mesa ao cliente
         for (Mesa mesaAtual : mesas) {
-            if (mesaAtual.getMesaEstaLivre() && mesaAtual.getCapacidade() >= qtdPessoas) {
+            if (mesaAtual.mesaPodeSerOcupada = true) {
                 requisicao.atribuirMesa(mesaAtual);
                 requisicao.setMesa(mesaAtual); // Atribui a mesa à requisição
                 System.out.println("Mesa " + mesaAtual.getIdMesa() + " atribuída ao cliente " + cliente.getNome());
@@ -35,7 +37,7 @@ public class Main {
             exibirMenu();
             System.out.print("Escolha uma opção: ");
             opcao = teclado.nextInt();
-
+            
             switch (opcao) {
                 case 1:
                     mesas = abrirMesa(teclado); // Adicionar novas mesas
@@ -47,13 +49,22 @@ public class Main {
                     fecharMesa(mesas); // Fechar uma mesa
                     break;
                 case 4:
-                    cliente = criarCliente(teclado);
+                    cliente = criarCliente(teclado); // Criar um novo cliente
                     break;
                 case 5:
-                    // Opção em branco 2
+                    verMenu(cardapio); // Ver o menu
                     break;
                 case 6:
-                    // Opção em branco 3
+                    selecionarProduto(teclado, cardapio, requisicao); // Selecionar um produto
+                    break;
+                case 7:
+                    incluirProduto(teclado, requisicao); // Incluir produto no pedido
+                    break;
+                case 8:
+                    fecharConta(requisicao); // Fechar conta
+                    break;
+                case 9:
+                    mostrarConta(requisicao); // Mostrar conta
                     break;
                 case 0:
                     System.out.println("Saindo do programa...");
@@ -62,6 +73,7 @@ public class Main {
                     System.out.println("Opção inválida. Tente novamente.");
             }
         } while (opcao != 0);
+           
 
         
     }
@@ -124,8 +136,66 @@ public class Main {
         System.out.println("2. Finalizar Requisição");
         System.out.println("3. Fechar Mesa");
         System.out.println("4. Criar Cliente");
-        System.out.println("5. Opção em branco");
-        System.out.println("6. Opção em branco");
+        System.out.println("5. Ver Menu");
+        System.out.println("6. Selecionar Produto");
+        System.out.println("7. Incluir Produto");
+        System.out.println("8. Fechar Conta");
+        System.out.println("9. Mostrar Conta");
         System.out.println("0. Sair");
     }
+
+    public static void verMenu(Cardapio cardapio) {
+        System.out.println("Pratos:");
+        for (Item prato : cardapio.getPratos()) {
+            System.out.println(prato.getDescricao() + " - R$ " + prato.precoFinal());
+        }
+        System.out.println("Bebidas:");
+        for (Item bebida : cardapio.getBebidas()) {
+            System.out.println(bebida.getDescricao() + " - R$ " + bebida.precoFinal());
+        }
+    }
+
+    public static void selecionarProduto(Scanner teclado, Cardapio cardapio, Requisicao requisicao) {
+        System.out.println("Digite o número do produto para selecionar:");
+        // Imprimir produtos do cardápio com índices
+        for (int i = 0; i < cardapio.getPratos().length; i++) {
+            System.out.println(i + 1 + ". " + cardapio.getPratos()[i].getDescricao());
+        }
+        for (int i = 0; i < cardapio.getBebidas().length; i++) {
+            System.out.println(i + 1 + cardapio.getPratos().length + ". " + cardapio.getBebidas()[i].getDescricao());
+        }
+        int indiceProduto = teclado.nextInt();
+        Item itemSelecionado;
+        if (indiceProduto <= cardapio.getPratos().length) {
+            itemSelecionado = cardapio.getPratos()[indiceProduto - 1];
+        } else {
+            itemSelecionado = cardapio.getBebidas()[indiceProduto - cardapio.getPratos().length - 1];
+        }
+        requisicao.getPedido().adicionarItem(itemSelecionado);
+        System.out.println("Produto " + itemSelecionado.getDescricao() + " selecionado.");
+    }
+
+    public static void incluirProduto(Scanner teclado, Requisicao requisicao) {
+        System.out.print("Digite a descrição do produto: ");
+        String descricao = teclado.next();
+        System.out.print("Digite o preço do produto: ");
+        double preco = teclado.nextDouble();
+        Item item = new Item(descricao, preco);
+        requisicao.getPedido().adicionarItem(item);
+        System.out.println("Produto incluído: " + item.getDescricao() + " - R$ " + item.precoFinal());
+    }
+
+    public static void fecharConta(Requisicao requisicao) {
+        requisicao.getPedido().fecharPedido();
+        System.out.println("Conta fechada. Total a pagar: R$ " + requisicao.getPedido().precoFinal());
+    }
+
+    public static void mostrarConta(Requisicao requisicao) {
+        System.out.println("Itens consumidos:");
+        for (Item item : requisicao.getPedido().getItens()) {
+            System.out.println(item.getDescricao() + " - R$ " + item.precoFinal());
+        }
+        System.out.println("Total: R$ " + requisicao.getPedido().precoFinal());
+    }
+}
 }
