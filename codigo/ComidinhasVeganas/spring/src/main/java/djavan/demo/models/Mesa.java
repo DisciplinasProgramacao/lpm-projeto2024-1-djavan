@@ -1,9 +1,29 @@
 package djavan.demo.models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = Mesa.TABLE_NAME)
 public class Mesa {
+    public static final String TABLE_NAME = "mesa";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true)
     private int idMesa;
+    
+    @Column(name = "capacidade", length = 60, nullable = false)
     private int capacidade;
+
+    @Column(name = "mesaEstaLivre", length = 60, nullable = false)
     private boolean mesaEstaLivre;
+
+    @Column(name = "mesaEstaLivre", length = 60, nullable = false)
     public boolean mesaPodeSerOcupada;
 
     /**
@@ -70,6 +90,14 @@ public class Mesa {
             mesaEstaLivre = true;
         }
             return mesaEstaLivre;
+    }
+
+    /**
+     * Método para setar o identificador único da mesa. 
+     * @param idMesa
+     */
+    public void setId(int idMesa) {
+        this.idMesa = idMesa;
     }
     
 }

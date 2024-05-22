@@ -20,7 +20,7 @@ public class RequisicaoService {
     public Requisicao findById(Long id){
         Optional<Requisicao> user = this.requisicaoRepository.findById(id);
         return user.orElseThrow(() -> new RuntimeException(
-            "Usuário não encontrado! Id: " + id + ", Tipo: " + Requisicao.class.getName()
+            "Requisição não encontrada! Id: " + id + ", Tipo: " + Requisicao.class.getName()
         ));
     }
 

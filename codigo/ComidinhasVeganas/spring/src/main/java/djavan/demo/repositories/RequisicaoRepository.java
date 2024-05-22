@@ -5,6 +5,5 @@ import djavan.demo.models.Requisicao;
 
 @Repository
 public interface RequisicaoRepository extends JpaRepository<Requisicao, Long> {
-    //Requisicao findById(String username);
     
 }
