@@ -1,8 +1,15 @@
 package djavan.demo.models;
 
+import org.hibernate.annotations.ManyToAny;
+
+import jakarta.persistence.ManyToOne;
+
 public class Pedido {
 	
 	private Cardapio cardapio;
+	
+	@ManyToOne
+	private Requisicao requisicao;
 
 	public Pedido(Cardapio cardapio) {
 		this.cardapio = cardapio;

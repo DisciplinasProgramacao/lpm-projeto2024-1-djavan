@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Requisicao {
@@ -19,6 +20,8 @@ public class Requisicao {
 
 	private Cliente cliente;
 	private Mesa mesa;
+	
+	@OneToMany(mappedBy = "requisicao")
 	private List<Pedido> pedidos = new ArrayList();
 
 	LocalDateTime now = LocalDateTime.now();
