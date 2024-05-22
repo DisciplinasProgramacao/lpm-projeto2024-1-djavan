@@ -2,29 +2,29 @@ package djavan.demo.service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import djavan.demo.models.Requisicao;
-import djavan.demo.repositories.RequisicaoRepository;
+import djavan.demo.models.Mesa;
+import djavan.demo.repositories.MesaRepository;
 import jakarta.transaction.Transactional;
 
 public class MesaService {
-        @Autowired
-    private RequisicaoRepository requisicaoRepository;
+    @Autowired
+    private MesaRepository mesaRepository;
 
-    public List<Requisicao> getAll() {
-        return requisicaoRepository.findAll();
+    public List<Mesa> getAll() {
+        return mesaRepository.findAll();
     }
 
-    public Requisicao findById(Long id){
-        Optional<Requisicao> user = this.requisicaoRepository.findById(id);
+    public Mesa findById(int id){
+        Optional<Mesa> user = Optional.ofNullable(this.mesaRepository.findById(id));
         return user.orElseThrow(() -> new RuntimeException(
-            "Usuário não encontrado! Id: " + id + ", Tipo: " + Requisicao.class.getName()
+            "Usuário não encontrado! Id: " + id + ", Tipo: " + Mesa.class.getName()
         ));
     }
 
     @Transactional
-    public Requisicao create(Requisicao obj){ 
-        //obj.setId(null);
-        obj = this.requisicaoRepository.save(obj);
+    public Mesa create(Mesa obj){ 
+        obj.setId(0);
+        obj = this.mesaRepository.save(obj);
         return obj;
     } 
 }
