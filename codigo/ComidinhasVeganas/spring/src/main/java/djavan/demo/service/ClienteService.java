@@ -1,32 +1,53 @@
 // ClientService.java
 package djavan.demo.service;
 
+import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 import djavan.demo.models.Cliente;
 import djavan.demo.repositories.ClienteRepository;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
+
 
 @Service
 public class ClienteService {
-
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> getAllClients() {
-        return clienteRepository.findAll();
+    public Cliente findById(Long id){
+        Optional<Cliente> cliente = this.clienteRepository.findById(id);
+        return cliente.orElseThrow(() -> new RuntimeException("Cliente não encontrado. Id "+ id + ", Tipo: " + Cliente.class.getName()));
     }
 
-    public Cliente getClientById(Long id) {
-        return clienteRepository.findById(id).orElse(null);
+    @Transactional
+    public Cliente create(Cliente obj) {
+        obj.setId(null);
+        obj = this.clienteRepository.save(obj);
+        return obj; 
     }
 
-    public Cliente createClient(Cliente cliente) {
-        return clienteRepository.save(cliente);
+
+    public void delete(Long id) {
+        findById(id);
+        try {
+            this.clienteRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Não é possível excluir, já que há entidades relacionadas.");
+        }
     }
 
-    public void deleteClient(Long id) {
-        clienteRepository.deleteById(id);
+    public void update(@Valid Cliente obj) {
+        Cliente existingCliente = findById(obj.getId());
+        existingCliente.setNome(obj.getNome());
+
+        this.clienteRepository.save(existingCliente);
     }
+
 }
+
+
+    
