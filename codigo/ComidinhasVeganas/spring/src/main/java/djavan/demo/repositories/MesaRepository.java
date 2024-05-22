@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import djavan.demo.models.Mesa;
 
 @Repository
-public interface MesaRepository extends JpaRepository<Mesa, Long> {
-    //Mesa findById(String username);
+public interface MesaRepository extends JpaRepository<Mesa, Integer> {
+    Mesa findById(int idMesa);
 
 }
