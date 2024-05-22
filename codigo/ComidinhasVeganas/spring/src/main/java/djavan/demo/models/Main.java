@@ -1,6 +1,7 @@
+package djavan.demo.models;
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.UUID;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -64,16 +65,15 @@ public class Main {
 
         
     }
+    /**
+     * @param teclado
+     * @return
+     */
     public static Cliente criarCliente(Scanner teclado) {
         Cliente cliente = new Cliente();
         System.out.print("Digite o nome do cliente: ");
         String nomeCliente = teclado.nextLine();
         cliente.setNome(nomeCliente);
-        System.out.println("Gerando Id do cliente... ");
-        UUID idCliente = UUID.randomUUID();
-        System.out.println("O id do cliente é " + idCliente);
-        cliente.setIdCliente(idCliente);
-        
         System.out.println("Cliente criado com sucesso: " + cliente.getNome());
         return cliente;
     }
