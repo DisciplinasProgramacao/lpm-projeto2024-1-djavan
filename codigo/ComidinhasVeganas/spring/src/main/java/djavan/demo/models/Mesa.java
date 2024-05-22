@@ -4,6 +4,7 @@ public class Mesa {
     private int idMesa;
     private int capacidade;
     private boolean mesaEstaLivre;
+    public boolean mesaPodeSerOcupada;
 
     /**
     * Construtor da classe Mesa.
