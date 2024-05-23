@@ -93,9 +93,8 @@ public class Pedido {
 		this.cliente = cliente2;
 	}
 
-	public Pedido getCliente() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getCliente'");
+	public Cliente getCliente() {
+		return this.cliente;
 	}
 
 }
