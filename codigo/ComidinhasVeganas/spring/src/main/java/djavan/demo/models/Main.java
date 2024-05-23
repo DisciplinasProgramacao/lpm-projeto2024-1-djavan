@@ -1,6 +1,7 @@
 package djavan.demo.models;
 import java.time.LocalDate;
 import java.util.Scanner;
+import djavan.demo.models.Restaurante;
 
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 
@@ -11,6 +12,7 @@ public class Main {
         Scanner teclado = new Scanner(System.in);
 
         Mesa[] mesas = new Mesa[0];
+        Restaurante restaurante = new Restaurante();
         
         Cliente cliente = criarCliente(teclado);
         int qtdPessoas = solicitarQuantidadePessoas(teclado);
@@ -52,7 +54,7 @@ public class Main {
                     cliente = criarCliente(teclado); // Criar um novo cliente
                     break;
                 case 5:
-                    verMenu(cardapio); // Ver o menu
+                    verMenu(); // Ver o menu
                     break;
                 case 6:
                     selecionarProduto(teclado, cardapio, requisicao); // Selecionar um produto
@@ -144,15 +146,8 @@ public class Main {
         System.out.println("0. Sair");
     }
 
-    public static void verMenu(Cardapio cardapio) {
-        System.out.println("Pratos:");
-        for (Item prato : cardapio.getPratos()) {
-            System.out.println(prato.getDescricao() + " - R$ " + prato.precoFinal());
-        }
-        System.out.println("Bebidas:");
-        for (Item bebida : cardapio.getBebidas()) {
-            System.out.println(bebida.getDescricao() + " - R$ " + bebida.precoFinal());
-        }
+    public static void verMenu() {
+        restaurante.exibirCardapio();
     }
 
     public static void selecionarProduto(Scanner teclado, Cardapio cardapio, Requisicao requisicao) {
