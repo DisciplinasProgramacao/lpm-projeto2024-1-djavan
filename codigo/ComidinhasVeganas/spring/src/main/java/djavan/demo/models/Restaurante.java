@@ -94,4 +94,19 @@ public class Restaurante {
     public List<Requisicao> getpedidosFechados() {
         return pedidosFechados;
     }
+
+    
+    /**
+     * Esse método itera sobre todos os itens da enumeração "Cardápio" usando o values.
+     * Para cada item ele chama o método toString do item. 
+     */
+    public void exibirCardapio(){
+        for (Cardapio item : Cardapio.values()) {
+               System.out.println(item.toString());
+        }
+    }
+
+    public void incluirProdutos(){
+
+    }
 }
