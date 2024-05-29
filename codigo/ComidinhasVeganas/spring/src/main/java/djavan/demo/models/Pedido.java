@@ -1,8 +1,6 @@
 package djavan.demo.models;
 
-
 import jakarta.persistence.ManyToOne;
-
 
 import jakarta.persistence.*;
 
@@ -10,50 +8,50 @@ import jakarta.persistence.*;
 @Table(name = "pedido")
 public class Pedido {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "cardapio", nullable = false)
-    private Cardapio cardapio;
+	@Column(name = "cardapio", nullable = false)
+	private Cardapio cardapio;
 
-    @Column(name = "data_pedido", nullable = false)
-    private String dataPedido;
+	@Column(name = "data_pedido", nullable = false)
+	private String dataPedido;
 
-    @Column(name = "hora_pedido", nullable = false)
-    private String horaPedido;
+	@Column(name = "hora_pedido", nullable = false)
+	private String horaPedido;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false, updatable = false)
-    private Cliente cliente;
+	@ManyToOne
+	@JoinColumn(name = "cliente_id", nullable = false, updatable = false)
+	private Cliente cliente;
 
-    @Column(name = "approved")
-    private Boolean approved;
+	@Column(name = "approved")
+	private Boolean approved;
 
-    @Column(name = "manager_id", nullable = false)
-    private String managerId;
+	@Column(name = "manager_id", nullable = false)
+	private String managerId;
 
-    public Pedido() {}
-
-    public Pedido(Long id, String cardapio, String dataPedido, String horaPedido, Cliente cliente, String managerId) {
-        this.id = id;
-        this.dataPedido = dataPedido;
-        this.horaPedido = horaPedido;
-        this.cliente= cliente;
-        this.managerId = managerId;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-	
-	
 	@ManyToOne
 	private Requisicao requisicao;
+
+	public Pedido() {
+	}
+
+	public Pedido(Long id, String cardapio, String dataPedido, String horaPedido, Cliente cliente, String managerId) {
+		this.id = id;
+		this.dataPedido = dataPedido;
+		this.horaPedido = horaPedido;
+		this.cliente = cliente;
+		this.managerId = managerId;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Pedido(Cardapio cardapio) {
 		this.cardapio = cardapio;
@@ -71,7 +69,6 @@ public class Pedido {
 		return cardapio.getValor();
 	}
 
-   
 	public Object getHoraPedido() {
 		return horaPedido;
 	}
@@ -80,14 +77,14 @@ public class Pedido {
 		this.horaPedido = (String) horaPedido;
 	}
 
-    public Object getDataPedido() {
-       return  this.dataPedido = (String) dataPedido;
+	public Object getDataPedido() {
+		return this.dataPedido = (String) dataPedido;
 
-    }
+	}
 
-    public void setDataPedido(Object dataPedido) {
-       this.dataPedido = (String) dataPedido;
-    }
+	public void setDataPedido(Object dataPedido) {
+		this.dataPedido = (String) dataPedido;
+	}
 
 	public void setCliente(Cliente cliente2) {
 		this.cliente = cliente2;
