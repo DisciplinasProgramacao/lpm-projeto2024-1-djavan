@@ -23,7 +23,7 @@ public class Mesa {
     @Column(name = "mesaEstaLivre", length = 60, nullable = false)
     private boolean mesaEstaLivre;
 
-    @Column(name = "mesaEstaLivre", length = 60, nullable = false)
+    @Column(name = "mesaPodeSerOcupada", length = 60, nullable = false)
     public boolean mesaPodeSerOcupada;
 
     /**
