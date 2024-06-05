@@ -1,8 +1,17 @@
 package djavan.demo.models;
 
-import jakarta.persistence.ManyToOne;
+import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 /**
  * Entidade que representa um pedido no sistema.
@@ -40,6 +49,12 @@ public class Pedido {
 
 	@ManyToOne
 	private Requisicao requisicao;
+	
+	@ManyToMany
+	@JoinTable(name = "pedido_produto",
+		joinColumns = @JoinColumn(name = "pedido_id"),
+		inverseJoinColumns = @JoinColumn(name = "produto_id"))
+	private List<Produto> produtos;
 
 	public Pedido() {
 	}
@@ -175,6 +190,15 @@ public class Pedido {
      */
 	public Cliente getCliente() {
 		return this.cliente;
+	}
+
+	
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 
 }
