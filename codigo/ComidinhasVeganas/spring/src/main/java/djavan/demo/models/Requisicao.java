@@ -1,260 +1,73 @@
 package djavan.demo.models;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
-/**
- * Classe que representa uma requisição no sistema.
- */
-@Entity
-@Table(name = Requisicao.TABLE_NAME)
 public class Requisicao {
 
-	public static final String TABLE_NAME = "requisicao";
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idRequisicao", unique = true)
-	private Long idRequisicao;
-	
-	@Column(name = "qtd_pessoas", length = 5, nullable = false, unique = false)
+	private int idRequisicao;
 	private int qtdPessoas;
-
-	@Column(name = "entrada_cliente", length = 20, nullable = false, unique = false)
-	private LocalDate entradaCliente;
-
-	@Column(name = "saida_cliente", length = 20, nullable = false, unique = false)
-	private LocalDate saidaCliente;
-
-	@Column(name = "status", length = 20, nullable = false, unique = false)
-	private boolean status;
-
-	@ManyToOne
-    @JoinColumn(name = "idCliente", nullable = false)
-	private Cliente cliente;
-
-	@ManyToOne
-    @JoinColumn(name = "idMesa", nullable = false)
-	private Mesa mesa;
+	private LocalDateTime entradaCliente;
+	private LocalDateTime saidaCliente;
+	private boolean aberta;
 	
-	@OneToMany(mappedBy = "requisicao")
+	private Cliente cliente;
+	private Mesa mesa;
 	private List<Pedido> pedidos = new ArrayList();
 
 	LocalDateTime now = LocalDateTime.now();
-
-	/**
-     * Construtor padrão da classe Requisicao.
-     */
-	public Requisicao() {
-	}
 	
-	/**
-     * Construtor da classe Requisicao.
-     *
-     * @param qtdPessoas Quantidade de pessoas para a reserva.
-     * @param cliente Cliente que fez a reserva.
-     */
 	public Requisicao(int qtdPessoas, Cliente cliente) {
 		this.qtdPessoas = qtdPessoas;
 		this.cliente = cliente;
 	}
 
-	/**
-     * Construtor da classe Requisicao.
-     *
-     * @param qtdPessoas Quantidade de pessoas para a reserva.
-     * @param entradaCliente Data de entrada do cliente.
-     * @param cliente Cliente que fez a reserva.
-     * @param mesa Mesa reservada para o cliente.
-     */
-	public Requisicao(int qtdPessoas, LocalDate entradaCliente, Cliente cliente, Mesa mesa) {
+	public Requisicao(int qtdPessoas, Cliente cliente, Mesa mesa) {
 		this.qtdPessoas = qtdPessoas;
 		this.entradaCliente = entradaCliente;
 		this.cliente = cliente;
 		this.mesa = mesa;
+		saidaCliente = LocalDateTime.now();
 	}
-
-	/**
-     * Construtor da classe Requisicao.
-     *
-     * @param i Identificador da requisição.
-     * @param qtdPessoas Quantidade de pessoas para a reserva.
-     * @param entradaCliente Data de entrada do cliente.
-     * @param saidaCliente Data de saída do cliente.
-     * @param status Status da reserva (ativo/inativo).
-     * @param cliente Cliente que fez a reserva.
-     */
-
-	public Requisicao(int i, int qtdPessoas2, LocalDate entradaCliente2, LocalDate saidaCliente2, boolean status2,
-			Cliente cliente2) {
-	}
-
-	// Início dos getters e setters
-	/**
-	 * Retorna o identificador único da requisição.
-	 * @return identificador da requisição.
-	 */
-	public Long getIdRequisicao() {
+	// GETTERS E SETTERS
+	public int getIdRequisicao() {
 		return idRequisicao;
 	}
 
-	/**
-	 * Define o identificador único da requisição.
-	 * @param idRequisicao identificador da requisição.
-	 */
-	public void setIdRequisicao(Long idRequisicao) {
-		this.idRequisicao = idRequisicao;
-	}
-
-	/**
-	 * Retorna a quantidade de pessoas para a reserva.
-	 * @return quantidade de pessoas.
-	 */
 	public int getQtdPessoas() {
 		return qtdPessoas;
 	}
 
-	/**
-	 * Define a quantidade de pessoas para a reserva.
-	 * @param qtdPessoas quantidade de pessoas.
-	 */
-	public void setQtdPessoas(int qtdPessoas) {
-		if (qtdPessoas >= 1) {
-			this.qtdPessoas = qtdPessoas;
-		}
-	}
-
-	/**
-	 * Retorna a data de entrada do cliente.
-	 * @return data de entrada.
-	 */
-	public LocalDate getEntradaCliente() {
+	public LocalDateTime getEntradaCliente() {
 		return entradaCliente;
 	}
 
-	/**
-	 * Define a data de entrada do cliente.
-	 * @param entradaCliente data de entrada.
-	 */
-	public void setEntradaCliente(LocalDate entradaCliente) {
-		this.entradaCliente = entradaCliente;
-	}
-
-	/**
-	 * Retorna a data de saída do cliente.
-	 * @return data de saída.
-	 */
-	public LocalDate getSaidaCliente() {
+	public LocalDateTime getSaidaCliente() {
 		return saidaCliente;
 	}
 
-	/**
-	 * Define a data de saída do cliente.
-	 * @param saidaCliente data de saída.
-	 */
-	public void setSaidaCliente(LocalDate saidaCliente) {
-		if (saidaCliente.isAfter(this.entradaCliente)) {
-			this.saidaCliente = saidaCliente;
-		}
+	public boolean isAberta() {
+		return aberta;
 	}
 
-	/**
-	 * Verifica se a reserva está ativa ou não.
-	 * @return status da reserva.
-	 */
-	public boolean isStatus() {
-		return status;
-	}
-
-	/**
-	 * Define o status da reserva.
-	 * @param status status da reserva.
-	 */
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	/**
-	 * Retorna o cliente associado à requisição.
-	 * @return cliente.
-	 */
 	public Cliente getCliente() {
 		return cliente;
 	}
 
-	/**
-	 * Define o cliente associado à requisição.
-	 * @param cliente cliente.
-	 */
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	/**
-	 * Retorna a mesa reservada para o cliente.
-	 * @return mesa.
-	 */
 	public Mesa getMesa() {
 		return mesa;
 	}
 
-	/**
-	 * Define a mesa reservada para o cliente.
-	 * @param mesa mesa.
-	 */
-	public void setMesa(Mesa mesa) {
-		this.mesa = mesa;
-	}
-	
-	/**
-	 * Retorna a lista de pedidos associados à requisição.
-	 * @return pedidos.
-	 */
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
-	//fim getters e setters
-	
-	/**
-	 * Adiciona um pedido à lista de pedidos da requisição.
-	 * @param cardapio cardápio do pedido.
-	 */
-	public void adicionarPedido(Cardapio cardapio) {
-		Pedido pedido = new Pedido(cardapio);
-		pedidos.add(pedido);
-	}
 
-	/**
-	 * Calcula o valor total dos pedidos da requisição.
-	 * @return valor total.
-	 */
-	public double calcularValorTotal() {
-		double total = 0.0;
-		for (Pedido pedido : pedidos) {
-			total += pedido.getValor();
-		}
-		return total;
-	}
-
-	
 	/**
 	 * Gera o código hash baseado no identificador da requisição.
 	 * @return código hash.
-	 */
+	 */	
 	@Override
 	public int hashCode() {
 		return Objects.hash(idRequisicao);
@@ -282,7 +95,7 @@ public class Requisicao {
 	 * @param mesa mesa a ser ocupada.
 	 */
 	public void atribuirMesa(Mesa mesa) {
-		if (mesa.mesaPodeSerOcupada) {
+		if (mesa.mesaPodeSerOcupada(qtdPessoas)) {
 			mesa.ocupar();
 		}
 	}
@@ -292,10 +105,29 @@ public class Requisicao {
 	 * @param mesa mesa a ser liberada.
 	 */
 	public void finalizarReq(Mesa mesa) {
-
-		setSaidaCliente(LocalDate.now());
-
+		saidaCliente = LocalDateTime.now();
+		aberta = false;
 		mesa.desocupar();
+	}
 
+	/**
+	 * Adiciona um pedido à lista de pedidos da requisição.
+	 * @param cardapio cardápio do pedido.
+	 */
+	public void adicionarPedido(Produtos produto) {
+		Pedido pedido = new Pedido(produto);
+		pedidos.add(pedido);
+	}
+
+	/**
+	 * Calcula o valor total dos pedidos da requisição.
+	 * @return valor total.
+	 */
+	public double calcularValorTotal() {
+		double total = 0.0;
+		for (Pedido pedido : pedidos) {
+			total += pedido.getValor();
+		}
+		return total;
 	}
 }
