@@ -15,17 +15,17 @@ public enum Cardapio {
 	CERVEJA_VEGANA(10, "Cerveja Vegana", 9.00),
 	TACA_DE_VINHO_VEGANO(11, "Vinho Vegano (Taça)", 18.00);
 	
-	private final int id;
+	private final Integer id;
 	private final String nome;
 	private final Double valor;
 	
-	private Cardapio(int id, String nome, Double valor) {
+	private Cardapio(Integer id, String nome, Double valor) {
 		this.id = id;
 		this.nome = nome;
 		this.valor = valor;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
