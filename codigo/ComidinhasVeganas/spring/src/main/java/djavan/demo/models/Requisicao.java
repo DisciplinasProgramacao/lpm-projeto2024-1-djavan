@@ -26,7 +26,6 @@ public class Requisicao {
 
 	public Requisicao(int qtdPessoas, Cliente cliente, Mesa mesa) {
 		this.qtdPessoas = qtdPessoas;
-		this.entradaCliente = entradaCliente;
 		this.cliente = cliente;
 		this.mesa = mesa;
 		saidaCliente = LocalDateTime.now();
@@ -114,9 +113,9 @@ public class Requisicao {
 	 * Adiciona um pedido à lista de pedidos da requisição.
 	 * @param cardapio cardápio do pedido.
 	 */
-	public void adicionarPedido(Produtos produto) {
-		Pedido pedido = new Pedido(produto);
-		pedidos.add(pedido);
+	public void adicionarPedido(Item produto) {
+
+		pedidos.add(produto);
 	}
 
 	/**
@@ -129,5 +128,10 @@ public class Requisicao {
 			total += pedido.getValor();
 		}
 		return total;
+	}
+
+	public void setStatus(boolean b) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
 	}
 }
