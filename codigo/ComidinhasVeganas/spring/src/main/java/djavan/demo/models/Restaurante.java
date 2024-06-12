@@ -101,7 +101,7 @@ public class Restaurante {
      * Para cada item ele chama o método toString do item. 
      */
     public void exibirCardapio(){
-        for (Cardapio item : Cardapio.values()) {
+        for (Cardapio item : Cardapio.class.get)) { 
                System.out.println(item.toString());
         }
     }
