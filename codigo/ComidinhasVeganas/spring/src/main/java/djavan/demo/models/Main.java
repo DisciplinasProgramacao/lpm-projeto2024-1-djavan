@@ -18,6 +18,10 @@ public class Main {
             System.out.print("Escolha uma opção: ");
             opcao = teclado.nextInt();
             
+            Mesa[] mesas;
+            Restaurante restaurante;
+            Requisicao requisicao;
+            Cardapio cardapio;
             switch (opcao) {
                 case 1:
                     mesas = abrirMesa(teclado); // Adicionar novas mesas
@@ -29,10 +33,10 @@ public class Main {
                     fecharMesa(mesas); // Fechar uma mesa
                     break;
                 case 4:
-                    cliente = criarCliente(teclado); // Criar um novo cliente
+                    Cliente cliente = criarCliente(teclado); // Criar um novo cliente
                     break;
                 case 5:
-                    verMenu(cardapio); // Ver o menu
+                    restaurante.exibirCardapio(); // Ver o menu
                     break;
                 case 6:
                     selecionarProduto(teclado, cardapio, requisicao); // Selecionar um produto
@@ -56,6 +60,13 @@ public class Main {
            
 
         
+    }
+    private static void incluirProduto(Scanner teclado) {
+      //perguntar o numero da mesa
+      //mostrar cardapio
+      //perguntar codigo do produto
+      //chamar o metodo do restaurante para incluir produto na mesa
+      
     }
     /**
      * @param teclado
@@ -125,7 +136,7 @@ public class Main {
     }
 
     public static void verMenu(Cardapio cardapio) {
-        System.out.println(restaurante.exibirMenu();
+        System.out.println();
     }
 
     public static void selecionarProduto(Scanner teclado, Cardapio cardapio, Requisicao requisicao) {
