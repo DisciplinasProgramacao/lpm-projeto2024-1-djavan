@@ -30,24 +30,18 @@ public class Main {
                     finalizarRequisicao(requisicao); // Finaliza a requisição e desocupa a mesa
                     break;
                 case 3:
-                    fecharMesa(mesas); // Fechar uma mesa
-                    break;
-                case 4:
                     Cliente cliente = criarCliente(teclado); // Criar um novo cliente
                     break;
-                case 5:
+                case 4:
                     restaurante.exibirCardapio(); // Ver o menu
                     break;
-                case 6:
+                case 5:
                     selecionarProduto(teclado, cardapio, requisicao); // Selecionar um produto
                     break;
-                case 7:
-                    incluirProduto(teclado, requisicao); // Incluir produto no pedido
+                case 6:
+                    fecharConta(restaurante); // Fechar conta
                     break;
-                case 8:
-                    fecharConta(requisicao); // Fechar conta
-                    break;
-                case 9:
+                case :
                     mostrarConta(requisicao); // Mostrar conta
                     break;
                 case 0:
@@ -60,13 +54,6 @@ public class Main {
            
 
         
-    }
-    private static void incluirProduto(Scanner teclado) {
-      //perguntar o numero da mesa
-      //mostrar cardapio
-      //perguntar codigo do produto
-      //chamar o metodo do restaurante para incluir produto na mesa
-      
     }
     /**
      * @param teclado
@@ -125,13 +112,11 @@ public class Main {
         System.out.println("\n--- Menu ---");
         System.out.println("1. Abrir Mesa");
         System.out.println("2. Finalizar Requisição");
-        System.out.println("3. Fechar Mesa");
-        System.out.println("4. Criar Cliente");
-        System.out.println("5. Ver Menu");
-        System.out.println("6. Selecionar Produto");
-        System.out.println("7. Incluir Produto");
-        System.out.println("8. Fechar Conta");
-        System.out.println("9. Mostrar Conta");
+        System.out.println("3. Criar Cliente");
+        System.out.println("4. Ver Menu");
+        System.out.println("5. Selecionar Produto");
+        System.out.println("6. Fechar Conta");
+        System.out.println("7. Mostrar Conta");
         System.out.println("0. Sair");
     }
 
@@ -144,24 +129,16 @@ public class Main {
         int prod = teclado.nextInt();
         System.out.println("Digite o número da mesa:");
         int mesa = teclado.nextInt();
+        Restaurante restaurante;
         restaurante.incluirItem(prod, mesa);
 
     }
 
-    // public static void incluirProduto(Scanner teclado, Requisicao requisicao) {
-    //     System.out.print("Digite a descrição do produto: ");
-    //     String descricao = teclado.next();
-    //     System.out.print("Digite o preço do produto: ");
-    //     double preco = teclado.nextDouble();
-    //     Item item = new Item(descricao, preco);
-    //     requisicao.getPedido().adicionarItem(item);
-    //     System.out.println("Produto incluído: " + item.getDescricao() + " - R$ " + item.precoFinal());
-    // }
-
     public static void fecharConta(int idMesa) {
+        Restaurante restaurante;
         Requisicao req = restaurante.localizarRequisicao(idMesa);
         restaurante.finalizarRequisicao(req);
-        System.out.println("Conta fechada. Total a pagar: R$ " + requisicao.mostrarConta());
+        System.out.println("Conta fechada. Total a pagar: R$ " + restaurante.mostrarConta());
     }
 
     public static void mostrarConta(Requisicao requisicao) {
