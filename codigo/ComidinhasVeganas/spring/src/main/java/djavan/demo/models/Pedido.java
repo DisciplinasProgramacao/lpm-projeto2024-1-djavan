@@ -8,8 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -28,14 +26,14 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "cardapio", nullable = false)
-	private Cardapio cardapio;
-
 	@Column(name = "data_pedido", nullable = false)
 	private String dataPedido;
 
 	@Column(name = "hora_pedido", nullable = false)
 	private String horaPedido;
+	
+	@Column(name = "hora_pedido", nullable = false)
+	private Double valorPedido;
 
 	@ManyToOne
 	@JoinColumn(name = "cliente_id", nullable = false, updatable = false)
@@ -50,11 +48,8 @@ public class Pedido {
 	@ManyToOne
 	private Requisicao requisicao;
 	
-	@ManyToMany
-	@JoinTable(name = "pedido_produto",
-		joinColumns = @JoinColumn(name = "pedido_id"),
-		inverseJoinColumns = @JoinColumn(name = "produto_id"))
-	private List<Produto> produtos;
+	@ManyToOne
+	private List<Cardapio> cardapio;
 
 	public Pedido() {
 	}
@@ -97,41 +92,6 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public Pedido(Cardapio cardapio) {
-		this.cardapio = cardapio;
-	}
-
-	
-	/**
-     * Retorna o cardápio associado ao pedido.
-     *
-     * @return O cardápio do pedido.
-     */
-	public Cardapio getcardapio() {
-		return cardapio;
-	}
-
-	
-	/**
-     * Define o cardápio do pedido.
-     *
-     * @param cardapio O novo cardápio do pedido.
-     */
-	public void setcardapio(Cardapio cardapio) {
-		this.cardapio = cardapio;
-	}
-
-	
-	/**
-     * Retorna o valor total do pedido.
-     *
-     * @return O valor total calculado a partir do cardápio.
-     */
-	public double getValor() {
-		return cardapio.getValor();
-	}
-
-	
 	/**
      * Retorna a hora do pedido.
      *
@@ -152,6 +112,14 @@ public class Pedido {
 	}
 
 	
+	public Double getValorPedido() {
+		return valorPedido;
+	}
+
+	public void setValorPedido(Double valorPedido) {
+		this.valorPedido = valorPedido;
+	}
+
 	/**
      * Retorna a data do pedido.
      *
@@ -193,12 +161,12 @@ public class Pedido {
 	}
 
 	
-	public List<Produto> getProdutos() {
-		return produtos;
+	public List<Cardapio> getCardapio() {
+		return cardapio;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setCardapio(List<Cardapio> cardapio) {
+		this.cardapio = cardapio;
 	}
 
 }

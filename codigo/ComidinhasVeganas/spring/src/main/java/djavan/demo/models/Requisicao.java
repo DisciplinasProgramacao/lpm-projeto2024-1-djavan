@@ -207,8 +207,7 @@ public class Requisicao {
 	 * Adiciona um pedido à lista de pedidos da requisição.
 	 * @param cardapio cardápio do pedido.
 	 */
-	public void adicionarPedido(Cardapio cardapio) {
-		Pedido pedido = new Pedido(cardapio);
+	public void adicionarPedido(Pedido pedido) {
 		pedidos.add(pedido);
 	}
 
@@ -219,7 +218,7 @@ public class Requisicao {
 	public double calcularValorTotal() {
 		double total = 0.0;
 		for (Pedido pedido : pedidos) {
-			total += pedido.getValor();
+			total += pedido.getValorPedido();
 		}
 		return total;
 	}
