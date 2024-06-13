@@ -10,16 +10,14 @@ public class Restaurante {
     private ArrayList<Requisicao> pedidosFechados = new ArrayList<>();
 
     public Restaurante(){
-        listaMesa.add(new Mesa(1, 4, true));
-        listaMesa.add(new Mesa(2, 4, true));
-        listaMesa.add(new Mesa(3, 4, true));
-        listaMesa.add(new Mesa(4, 4, true));
-        listaMesa.add(new Mesa(5, 6, true));
-        listaMesa.add(new Mesa(6, 6, true));
-        listaMesa.add(new Mesa(7, 6, true));
-        listaMesa.add(new Mesa(8, 6, true));
-        listaMesa.add(new Mesa(9, 8, true));
-        listaMesa.add(new Mesa(10, 8, true));
+        for(int i = 1; i <= 10; i++){
+            if(i < 5)
+                listaMesa.add(new Mesa(i, 4, true));  
+            else if(i < 9 && i > 4)  
+                listaMesa.add(new Mesa(i, 6,true));
+            else
+                listaMesa.add(new Mesa(i, 8, true));
+        }
     }
     /**
     * @param qtdPessoas - busca se a mesa com a quantidade de cadeiras que o cliente precisa esta livre
