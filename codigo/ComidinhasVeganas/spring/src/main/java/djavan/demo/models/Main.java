@@ -127,12 +127,12 @@ public class Main {
         System.out.println();
     }
 
-    public static void selecionarProduto(Scanner teclado, Requisicao requisicao) {
+    public void selecionarProduto(Scanner teclado, Requisicao requisicao) {
         Restaurante.exibirCardapio();
         System.out.println("Digite o número do produto para selecionar:");
         int prod = teclado.nextInt();
         System.out.println("Digite o número da mesa:");
-        int mesa = teclado.nextInt();
+        int mesa = teclado.nextInt(); 
         Restaurante.adicionarProduto(prod, mesa);
 
     }
@@ -151,7 +151,7 @@ public class Main {
         Requisicao req = restaurante.localizarRequisicao(idMesa);
         Restaurante.finalizarRequisicao(req);
         System.out.println("Conta fechada. Total a pagar: R$ " + requisicao.mostrarConta());
-    }
+    } // nao necessaria
 
     public static void mostrarConta(Requisicao requisicao) {
         System.out.println("Itens consumidos:");

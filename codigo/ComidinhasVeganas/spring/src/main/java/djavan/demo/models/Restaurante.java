@@ -98,17 +98,16 @@ public class Restaurante {
      * Para cada item ele chama o método toString do item. 
      */
     public void exibirCardapio(){
-        Cardapio item;
+        Cardapio item = new Cardapio();
         for (int i = 0; i <= item.getProdutos().size(); i++) { 
                System.out.println(item.getProdutos().get(i).toString());
         }
     }
 
     public void incluirProdutos(int idProd, Mesa mesa){
-        Requisicao requisicao;
         for(int i = 0; i < requisicoesAtendidas.size(); i++){
             if (requisicoesAtendidas.get(i).getMesa() == mesa) {
-                requisicao.adicionarProduto(idProd);   
+                requisicoesAtendidas.get(i).adicionarProduto(idProd);
             }
         }
     }
