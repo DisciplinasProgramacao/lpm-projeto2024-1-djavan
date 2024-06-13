@@ -15,7 +15,7 @@ public class Requisicao {
 	
 	private Cliente cliente;
 	private Mesa mesa;
-	private List<Pedido> pedidos = new ArrayList();
+	private List<Produto> produtos = new ArrayList();
 
 	LocalDateTime now = LocalDateTime.now();
 	
@@ -113,9 +113,13 @@ public class Requisicao {
 	 * Adiciona um pedido à lista de pedidos da requisição.
 	 * @param cardapio cardápio do pedido.
 	 */
-	public void adicionarPedido(Item produto) {
-
-		pedidos.add(produto);
+	public void adicionarProduto(int idProd) {
+		Cardapio cardapio;
+		for(int i = 0; i < cardapio.getProdutos().size(); i++){
+			if(cardapio.getProdutos().get(i).getId() == idProd){
+				pedidos.add(cardapio.getProdutos().get(i));
+			}
+		}
 	}
 
 	/**
@@ -125,13 +129,8 @@ public class Requisicao {
 	public double calcularValorTotal() {
 		double total = 0.0;
 		for (Pedido pedido : pedidos) {
-			total += pedido.getValor();
+			total += pedido.getValorPedido();
 		}
 		return total;
-	}
-
-	public void setStatus(boolean b) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
 	}
 }

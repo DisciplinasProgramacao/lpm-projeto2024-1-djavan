@@ -10,7 +10,6 @@ public class Main {
 
         Scanner teclado = new Scanner(System.in);
 
-       
         // Menu de opções
         int opcao;
         do {
@@ -30,24 +29,16 @@ public class Main {
                     finalizarRequisicao(requisicao); // Finaliza a requisição e desocupa a mesa
                     break;
                 case 3:
-                    fecharMesa(mesas); // Fechar uma mesa
-                    break;
-                case 4:
                     Cliente cliente = criarCliente(teclado); // Criar um novo cliente
                     break;
-                case 5:
+                case 4:
                     restaurante.exibirCardapio(); // Ver o menu
                     break;
+                case 5:
+                    selecionarProduto(teclado, requisicao);; // Incluir produto no pedido
+                    // tem que passar um produto
+                    break;
                 case 6:
-                    selecionarProduto(teclado, cardapio, requisicao); // Selecionar um produto
-                    break;
-                case 7:
-                    incluirProduto(teclado, requisicao); // Incluir produto no pedido
-                    break;
-                case 8:
-                    fecharConta(requisicao); // Fechar conta
-                    break;
-                case 9:
                     mostrarConta(requisicao); // Mostrar conta
                     break;
                 case 0:
@@ -57,9 +48,6 @@ public class Main {
                     System.out.println("Opção inválida. Tente novamente.");
             }
         } while (opcao != 0);
-           
-
-        
     }
     private static void incluirProduto(Scanner teclado) {
       //perguntar o numero da mesa
@@ -103,23 +91,24 @@ public class Main {
  
              // Cria a mesa com o ID correspondente a (i + 1)
              mesas[i] = new Mesa(i + 1, capacidade, true);
-         }
+        }
          return mesas;
-    }
+    } // acho q esse metodo tem que ser colocado na classe restaurante, por mais que ele atualmente nao seja necessario
+      // o professor pediu para modificar a parte de criacao de mesa na classe restaurante by Arthur
 
     public static void finalizarRequisicao(Requisicao requisicao) {
         if (requisicao.getMesa() != null) {
             requisicao.finalizarReq(requisicao.getMesa()); // Finalizar requisição e desocupar a mesa
-            requisicao.setStatus(true); // Atualizar status da requisição
             System.out.println("Requisição finalizada com sucesso.");
         } else {
             System.out.println("Nenhuma mesa atribuída à requisição.");
         }
     }
 
-    public static void fecharMesa(Mesa[] mesas) {
-        System.out.println("Fechamento de mesa ainda não implementado.");
-    }
+    // public static void fecharMesa(Mesa[] mesas) {
+    //     System.out.println("Fechamento de mesa ainda não implementado."); 
+    // }
+    // nao necessario ao iniciar o finalizar uma requisicao o status de uma mesa ja e trocado by Arthur
 
     public static void exibirMenu() {
         System.out.println("\n--- Menu ---");
@@ -128,8 +117,7 @@ public class Main {
         System.out.println("3. Fechar Mesa");
         System.out.println("4. Criar Cliente");
         System.out.println("5. Ver Menu");
-        System.out.println("6. Selecionar Produto");
-        System.out.println("7. Incluir Produto");
+        System.out.println("6. Fazer Pedido");
         System.out.println("8. Fechar Conta");
         System.out.println("9. Mostrar Conta");
         System.out.println("0. Sair");
@@ -139,12 +127,13 @@ public class Main {
         System.out.println();
     }
 
-    public static void selecionarProduto(Scanner teclado, Cardapio cardapio, Requisicao requisicao) {
+    public static void selecionarProduto(Scanner teclado, Requisicao requisicao) {
+        Restaurante.exibirCardapio();
         System.out.println("Digite o número do produto para selecionar:");
         int prod = teclado.nextInt();
         System.out.println("Digite o número da mesa:");
         int mesa = teclado.nextInt();
-        restaurante.incluirItem(prod, mesa);
+        Restaurante.adicionarProduto(prod, mesa);
 
     }
 
@@ -160,7 +149,7 @@ public class Main {
 
     public static void fecharConta(int idMesa) {
         Requisicao req = restaurante.localizarRequisicao(idMesa);
-        restaurante.finalizarRequisicao(req);
+        Restaurante.finalizarRequisicao(req);
         System.out.println("Conta fechada. Total a pagar: R$ " + requisicao.mostrarConta());
     }
 

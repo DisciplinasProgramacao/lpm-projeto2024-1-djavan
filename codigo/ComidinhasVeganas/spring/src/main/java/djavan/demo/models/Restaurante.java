@@ -21,14 +21,13 @@ public class Restaurante {
         listaMesa.add(new Mesa(9, 8, true));
         listaMesa.add(new Mesa(10, 8, true));
     }
-
     /**
     * @param qtdPessoas - busca se a mesa com a quantidade de cadeiras que o cliente precisa esta livre
     * @return caso a a mesa esteja livre retorna a mesa caso nao retorna null
     */
     public Mesa buscarMesa(int qtdPessoas){
         for(Mesa mesa : listaMesa){
-            if(mesa.getMesaEstaLivre() && mesa.getCapacidade() >= qtdPessoas)
+            if(mesa.mesaPodeSerOcupada)
                 return mesa;
         }
         return null;
@@ -45,13 +44,14 @@ public class Restaurante {
         if (mesaRequisicao == null) {
             Requisicao requisicao = new Requisicao(qtdPessoas, cliente); 
             fila.add(requisicao);
+            return requisicao;
         }else{
             LocalDate entradaCliente = LocalDate.now();
             Requisicao requisicao = new Requisicao(qtdPessoas, cliente, mesaRequisicao); 
             mesaRequisicao.ocupar();
             requisicoesAtendidas.add(requisicao);
+            return requisicao;
         }
-        return requisicao;
     }
 
     /**
@@ -83,30 +83,35 @@ public class Restaurante {
         }
     }
 
-    public List<Requisicao> getRequisicoesAguardando() {
-        return fila;
+    /**
+     * @param id
+     * @return retorna a requisicao pedida
+     */
+    public Requisicao localizarRequisicao(int id) {
+        Requisicao requisicao;
+        for(int i = 0; i <= requisicoesAtendidas.size(); i++) {
+            if (requisicoesAtendidas.get(i).getIdRequisicao() == id){
+                return requisicoesAtendidas.get(i);
+            }
+        }
     }
-
-    public List<Requisicao> getRequisicoesAtendidas() {
-        return requisicoesAtendidas;
-    }
-
-    public List<Requisicao> getpedidosFechados() {
-        return pedidosFechados;
-    }
-
-    
     /**
      * Esse método itera sobre todos os itens da enumeração "Cardápio" usando o values.
      * Para cada item ele chama o método toString do item. 
      */
     public void exibirCardapio(){
-        for (Cardapio item : Cardapio.class.get)) { 
-               System.out.println(item.toString());
+        Cardapio item;
+        for (int i = 0; i <= item.getProdutos().size(); i++) { 
+               System.out.println(item.getProdutos().get(i).toString());
         }
     }
 
-    public void incluirProdutos(){
-
+    public void incluirProdutos(int idProd, Mesa mesa){
+        Requisicao requisicao;
+        for(int i = 0; i < requisicoesAtendidas.size(); i++){
+            if (requisicoesAtendidas.get(i).getMesa() == mesa) {
+                requisicao.adicionarProduto(idProd);   
+            }
+        }
     }
 }
