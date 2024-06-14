@@ -19,6 +19,20 @@ public class Restaurante {
                 listaMesa.add(new Mesa(i, 8, true));
         }
     }
+
+    public ArrayList<Mesa> getListaMesa() {
+        return listaMesa;
+    }
+    public ArrayList<Requisicao> getRequisicoesAtendidas() {
+        return requisicoesAtendidas;
+    }
+    public ArrayList<Requisicao> getFila() {
+        return fila;
+    }
+    public ArrayList<Requisicao> getPedidosFechados() {
+        return pedidosFechados;
+    }
+    
     /**
     * @param qtdPessoas - busca se a mesa com a quantidade de cadeiras que o cliente precisa esta livre
     * @return caso a a mesa esteja livre retorna a mesa caso nao retorna null
@@ -66,6 +80,7 @@ public class Restaurante {
             }
        }
        verificarFilaEspera();
+       mostrarConta(requisicao);
        return requisicao;
     }
 
@@ -97,18 +112,30 @@ public class Restaurante {
      * Esse método itera sobre todos os itens da enumeração "Cardápio" usando o values.
      * Para cada item ele chama o método toString do item. 
      */
-    public void exibirCardapio(){
+    public static void exibirCardapio(){
         Cardapio item = new Cardapio();
         for (int i = 0; i <= item.getProdutos().size(); i++) { 
                System.out.println(item.getProdutos().get(i).toString());
         }
     }
 
-    public void incluirProdutos(int idProd, Mesa mesa){
+    public void incluirProdutos(int idProd, int numMesa){
         for(int i = 0; i < requisicoesAtendidas.size(); i++){
-            if (requisicoesAtendidas.get(i).getMesa() == mesa) {
+            if (requisicoesAtendidas.get(i).getMesa().getIdMesa() == numMesa) {
                 requisicoesAtendidas.get(i).adicionarProduto(idProd);
             }
         }
+    }
+    public static void adicionarProduto(int prod, int mesa) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'adicionarProduto'");
+    }
+
+    public static void mostrarConta(Requisicao requisicao) {
+        System.out.println("Itens consumidos:");
+        for (int i = 0; i <= requisicao.getProdutos().size(); i++) {
+            System.out.println(requisicao.getProdutos().get(i).getNome() + " - R$ " + requisicao.getProdutos().get(i).getValue());
+        }
+        System.out.println("Total: R$ " + requisicao.calcularValorTotal());
     }
 }

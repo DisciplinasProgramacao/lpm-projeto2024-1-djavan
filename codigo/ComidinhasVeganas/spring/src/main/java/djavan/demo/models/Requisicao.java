@@ -15,7 +15,7 @@ public class Requisicao {
 	
 	private Cliente cliente;
 	private Mesa mesa;
-	private List<Produto> produtos = new ArrayList();
+	private List<Item> produtos = new ArrayList();
 
 	LocalDateTime now = LocalDateTime.now();
 	
@@ -59,8 +59,8 @@ public class Requisicao {
 		return mesa;
 	}
 
-	public List<Pedido> getPedidos() {
-		return pedidos;
+	public List<Item> getProdutos() {
+		return produtos;
 	}
 
 	/**
@@ -114,10 +114,10 @@ public class Requisicao {
 	 * @param cardapio cardápio do pedido.
 	 */
 	public void adicionarProduto(int idProd) {
-		Cardapio cardapio;
+		Cardapio cardapio = new Cardapio();
 		for(int i = 0; i < cardapio.getProdutos().size(); i++){
 			if(cardapio.getProdutos().get(i).getId() == idProd){
-				pedidos.add(cardapio.getProdutos().get(i));
+				produtos.add(cardapio.getProdutos().get(i));
 			}
 		}
 	}
@@ -127,10 +127,6 @@ public class Requisicao {
 	 * @return valor total.
 	 */
 	public double calcularValorTotal() {
-		double total = 0.0;
-		for (Pedido pedido : pedidos) {
-			total += pedido.getValorPedido();
-		}
-		return total;
+		return produtos.stream().mapToDouble(c -> produto);
 	}
 }
