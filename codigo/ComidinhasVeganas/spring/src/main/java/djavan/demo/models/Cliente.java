@@ -1,7 +1,4 @@
 package djavan.demo.models;
-
-
-
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,14 +15,11 @@ import jakarta.persistence.Table;
     
     public class Cliente {
         String nome;
-
     
         public interface CreateCliente {}
         public interface UpdateCliente {}
     
         public static final String TABLE_NAME = "cliente";
-    
-        public Cliente() {}
     
         @Id
         @Column(name = "id", unique = true)
@@ -46,16 +40,4 @@ import jakarta.persistence.Table;
     public Long getId() {
         return id;
     }
-
-	
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-
 }
