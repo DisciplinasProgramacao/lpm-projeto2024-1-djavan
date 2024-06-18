@@ -28,7 +28,7 @@ public class Requisicao {
 		this.qtdPessoas = qtdPessoas;
 		this.cliente = cliente;
 		this.mesa = mesa;
-		saidaCliente = LocalDateTime.now();
+		entradaCliente = LocalDateTime.now();
 	}
 	// GETTERS E SETTERS
 	public int getIdRequisicao() {

@@ -3,6 +3,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.DocFlavor.READER;
+
 public class Restaurante {
     private ArrayList<Mesa> listaMesa = new ArrayList<>(10);
     private ArrayList<Requisicao> requisicoesAtendidas = new ArrayList<>();
@@ -53,12 +55,11 @@ public class Restaurante {
     public Requisicao abrirRequisicao(Cliente cliente, int qtdPessoas){
         Mesa mesaRequisicao = buscarMesa(qtdPessoas);
         
-        if (mesaRequisicao == null) {
+        if (!mesaRequisicao.mesaPodeSerOcupada) {
             Requisicao requisicao = new Requisicao(qtdPessoas, cliente); 
             fila.add(requisicao);
             return requisicao;
         }else{
-            LocalDate entradaCliente = LocalDate.now();
             Requisicao requisicao = new Requisicao(qtdPessoas, cliente, mesaRequisicao); 
             mesaRequisicao.ocupar();
             requisicoesAtendidas.add(requisicao);
@@ -92,7 +93,8 @@ public class Restaurante {
             Requisicao requisicaoAtual = fila.get(i);
             Mesa mesa = buscarMesa(requisicaoAtual.getQtdPessoas());
             if(mesa == null) break;
-                abrirRequisicao(requisicaoAtual.getCliente(), requisicaoAtual.getQtdPessoas());
+            abrirRequisicao(requisicaoAtual.getCliente(), requisicaoAtual.getQtdPessoas());
+            fila.remove(fila.get(i));
         }
     }
 
@@ -119,7 +121,7 @@ public class Restaurante {
         }
     }
 
-    public void incluirProdutos(int idProd, int numMesa){
+    public void incluirItem(int idProd, int numMesa){
         for(int i = 0; i < requisicoesAtendidas.size(); i++){
             if (requisicoesAtendidas.get(i).getMesa().getIdMesa() == numMesa) {
                 requisicoesAtendidas.get(i).adicionarProduto(idProd);
