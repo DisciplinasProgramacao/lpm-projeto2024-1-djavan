@@ -10,25 +10,36 @@ public class Restaurante {
     private ArrayList<Requisicao> pedidosFechados = new ArrayList<>();
 
     public Restaurante(){
-        listaMesa.add(new Mesa(1, 4, true));
-        listaMesa.add(new Mesa(2, 4, true));
-        listaMesa.add(new Mesa(3, 4, true));
-        listaMesa.add(new Mesa(4, 4, true));
-        listaMesa.add(new Mesa(5, 6, true));
-        listaMesa.add(new Mesa(6, 6, true));
-        listaMesa.add(new Mesa(7, 6, true));
-        listaMesa.add(new Mesa(8, 6, true));
-        listaMesa.add(new Mesa(9, 8, true));
-        listaMesa.add(new Mesa(10, 8, true));
+        for(int i = 1; i <= 10; i++){
+            if(i < 5)
+                listaMesa.add(new Mesa(i, 4, true));  
+            else if(i < 9 && i > 4)  
+                listaMesa.add(new Mesa(i, 6,true));
+            else
+                listaMesa.add(new Mesa(i, 8, true));
+        }
     }
 
+    public ArrayList<Mesa> getListaMesa() {
+        return listaMesa;
+    }
+    public ArrayList<Requisicao> getRequisicoesAtendidas() {
+        return requisicoesAtendidas;
+    }
+    public ArrayList<Requisicao> getFila() {
+        return fila;
+    }
+    public ArrayList<Requisicao> getPedidosFechados() {
+        return pedidosFechados;
+    }
+    
     /**
     * @param qtdPessoas - busca se a mesa com a quantidade de cadeiras que o cliente precisa esta livre
     * @return caso a a mesa esteja livre retorna a mesa caso nao retorna null
     */
     public Mesa buscarMesa(int qtdPessoas){
         for(Mesa mesa : listaMesa){
-            if(mesa.getMesaEstaLivre() && mesa.getCapacidade() >= qtdPessoas)
+            if(mesa.mesaPodeSerOcupada)
                 return mesa;
         }
         return null;
@@ -45,13 +56,14 @@ public class Restaurante {
         if (mesaRequisicao == null) {
             Requisicao requisicao = new Requisicao(qtdPessoas, cliente); 
             fila.add(requisicao);
+            return requisicao;
         }else{
             LocalDate entradaCliente = LocalDate.now();
             Requisicao requisicao = new Requisicao(qtdPessoas, cliente, mesaRequisicao); 
             mesaRequisicao.ocupar();
             requisicoesAtendidas.add(requisicao);
+            return requisicao;
         }
-        return requisicao;
     }
 
     /**
@@ -68,6 +80,7 @@ public class Restaurante {
             }
        }
        verificarFilaEspera();
+       mostrarConta(requisicao);
        return requisicao;
     }
 
@@ -83,30 +96,46 @@ public class Restaurante {
         }
     }
 
-    public List<Requisicao> getRequisicoesAguardando() {
-        return fila;
+    /**
+     * @param id
+     * @return retorna a requisicao pedida
+     */
+    public Requisicao localizarRequisicao(int id) {
+        Requisicao requisicao;
+        for(int i = 0; i <= requisicoesAtendidas.size(); i++) {
+            if (requisicoesAtendidas.get(i).getIdRequisicao() == id){
+                return requisicoesAtendidas.get(i);
+            }
+        }
     }
-
-    public List<Requisicao> getRequisicoesAtendidas() {
-        return requisicoesAtendidas;
-    }
-
-    public List<Requisicao> getpedidosFechados() {
-        return pedidosFechados;
-    }
-
-    
     /**
      * Esse método itera sobre todos os itens da enumeração "Cardápio" usando o values.
      * Para cada item ele chama o método toString do item. 
      */
-    public void exibirCardapio(){
-        for (Cardapio item : Cardapio.class.get)) { 
-               System.out.println(item.toString());
+    public static void exibirCardapio(){
+        Cardapio item = new Cardapio();
+        for (int i = 0; i <= item.getProdutos().size(); i++) { 
+               System.out.println(item.getProdutos().get(i).toString());
         }
     }
 
-    public void incluirProdutos(){
+    public void incluirProdutos(int idProd, int numMesa){
+        for(int i = 0; i < requisicoesAtendidas.size(); i++){
+            if (requisicoesAtendidas.get(i).getMesa().getIdMesa() == numMesa) {
+                requisicoesAtendidas.get(i).adicionarProduto(idProd);
+            }
+        }
+    }
+    public static void adicionarProduto(int prod, int mesa) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'adicionarProduto'");
+    }
 
+    public static void mostrarConta(Requisicao requisicao) {
+        System.out.println("Itens consumidos:");
+        for (int i = 0; i <= requisicao.getProdutos().size(); i++) {
+            System.out.println(requisicao.getProdutos().get(i).getNome() + " - R$ " + requisicao.getProdutos().get(i).getValue());
+        }
+        System.out.println("Total: R$ " + requisicao.calcularValorTotal());
     }
 }

@@ -41,14 +41,7 @@ public class Main {
                     System.out.println("Opção inválida. Tente novamente.");
             }
         } while (opcao != 0);
-    }
-    private static void incluirProduto(Scanner teclado) {
-      //perguntar o numero da mesa
-      //mostrar cardapio
-      //perguntar codigo do produto
-      //chamar o metodo do restaurante para incluir produto na mesa
-      
-    }
+
     /**
      * @param teclado
      * @return
@@ -106,8 +99,9 @@ public class Main {
         int prod = teclado.nextInt();
         System.out.println("Digite o número da mesa:");
         int mesa = teclado.nextInt(); 
-    
-        Restaurante.incluirItem(prod, mesa);
+        
+        Restaurante restaurante;
+        restaurante.incluirItem(prod, mesa);
     }
 
 }
