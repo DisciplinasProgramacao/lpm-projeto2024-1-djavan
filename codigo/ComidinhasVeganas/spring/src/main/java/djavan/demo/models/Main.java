@@ -41,7 +41,7 @@ public class Main {
                     System.out.println("Opção inválida. Tente novamente.");
             }
         } while (opcao != 0);
-
+    }
     /**
      * @param teclado
      * @return
@@ -103,6 +103,6 @@ public class Main {
         Restaurante restaurante;
         restaurante.incluirItem(prod, mesa);
     }
-
+}   
 }
 
