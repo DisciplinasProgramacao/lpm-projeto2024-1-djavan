@@ -126,10 +126,6 @@ public class Restaurante {
             }
         }
     }
-    public static void adicionarProduto(int prod, int mesa) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'adicionarProduto'");
-    }
 
     public static void mostrarConta(Requisicao requisicao) {
         System.out.println("Itens consumidos:");
