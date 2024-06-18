@@ -42,13 +42,6 @@ public class Main {
             }
         } while (opcao != 0);
     }
-    private static void incluirProduto(Scanner teclado) {
-      //perguntar o numero da mesa
-      //mostrar cardapio
-      //perguntar codigo do produto
-      //chamar o metodo do restaurante para incluir produto na mesa
-      
-    }
     /**
      * @param teclado
      * @return
@@ -106,9 +99,24 @@ public class Main {
         int prod = teclado.nextInt();
         System.out.println("Digite o número da mesa:");
         int mesa = teclado.nextInt(); 
-    
-        Restaurante.adicionarProduto(prod, mesa);
+        
+        Restaurante restaurante;
+        restaurante.incluirItem(prod, mesa);
     }
 
+    public static void fecharConta(int idMesa) {
+        Restaurante restaurante;
+        Requisicao req = restaurante.localizarRequisicao(idMesa);
+        restaurante.finalizarRequisicao(req);
+        System.out.println("Conta fechada. Total a pagar: R$ " + restaurante.mostrarConta());
+    }
+
+    public static void mostrarConta(Requisicao requisicao) {
+        System.out.println("Itens consumidos:");
+        for (Item item : requisicao.getPedido().getItens()) {
+            System.out.println(item.getDescricao() + " - R$ " + item.precoFinal());
+        }
+        System.out.println("Total: R$ " + requisicao.getPedido().precoFinal());
+    }
 }
 

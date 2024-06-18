@@ -1,15 +1,16 @@
 package djavan.demo.service;
 
-import djavan.demo.models.Pedido;
-import djavan.demo.models.Cliente;
-import djavan.demo.repositories.PedidoRepository;
-
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import djavan.demo.models.Cliente;
+import djavan.demo.models.Pedido;
+import djavan.demo.models.Produto;
+import djavan.demo.repositories.PedidoRepository;
 
 
 @Service
@@ -34,7 +35,6 @@ public class PedidoService {
     @Transactional
     public Pedido create(Pedido obj) {
         Cliente cliente = this.clienteService.findById(obj.getCliente().getId()); //validação que o usuário existe
-        obj.setId(null);
         obj.setCliente(cliente);
         obj = this.pedidoRepository.save(obj);
         return obj;
@@ -44,7 +44,6 @@ public class PedidoService {
     public Pedido update(Pedido obj) {
         Pedido newObj = findById(obj.getId());
         newObj.setDataPedido(obj.getDataPedido());
-        newObj.setHoraPedido(obj.getHoraPedido());
         return this.pedidoRepository.save(newObj);
     }
 
@@ -57,13 +56,18 @@ public class PedidoService {
             throw new RuntimeException("Não é possível excluir.");
         }
     }
-    
-    public Pedido atualizarStatus(Long id, String novoStatus) {
-        return null;
-    }
 
     public List<Pedido> findAllPedidos() {
         return this.pedidoRepository.findAll();
+    }
+
+    public Pedido adicionarProduto(Long id, Produto produto) {
+        Pedido pedido = findById(id);
+        if (pedido != null) {
+            pedido.adicionarProduto(produto);
+            return pedidoRepository.save(pedido);
+        }
+        return null;
     }
 
 }
