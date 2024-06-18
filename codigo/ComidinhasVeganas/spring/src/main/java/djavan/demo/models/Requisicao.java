@@ -120,7 +120,7 @@ public class Requisicao {
 				produtos.add(cardapio.getProdutos().get(i));
 			}
 		}
-	}
+
 
 	/**
 	 * Calcula o valor total dos pedidos da requisição.

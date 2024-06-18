@@ -107,7 +107,8 @@ public class Main {
         System.out.println("Digite o número da mesa:");
         int mesa = teclado.nextInt(); 
     
-        Restaurante.adicionarProduto(prod, mesa);
+
+        Restaurante.incluirItem(prod, mesa);
     }
 
 }
