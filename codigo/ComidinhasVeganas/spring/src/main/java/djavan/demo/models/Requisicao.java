@@ -113,9 +113,9 @@ public class Requisicao {
 	 * Adiciona um pedido à lista de pedidos da requisição.
 	 * @param cardapio cardápio do pedido.
 	 */
-	public void adicionarPedido(Item produto) {
+	public void adicionarItem(Item item) {
 
-		pedidos.add(produto);
+		pedidos.add(item);
 	}
 
 	/**
