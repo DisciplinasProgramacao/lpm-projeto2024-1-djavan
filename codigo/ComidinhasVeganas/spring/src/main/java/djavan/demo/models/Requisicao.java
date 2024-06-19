@@ -4,19 +4,49 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = Requisicao.TABLE_NAME)
 public class Requisicao {
 
-	private Long idRequisicao;
+	public static final String TABLE_NAME = "requisicao";
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "idRequisicao", unique = true)
+	private long idRequisicao;
+
+	@Column(name = "qtd_pessoas", length = 5, nullable = false, unique = false)
 	private int qtdPessoas;
+
+	@Column(name = "entrada_cliente", length = 20, nullable = false, unique = false)
 	private LocalDateTime entradaCliente;
+
+	@Column(name = "saida_cliente", length = 20, nullable = false, unique = false)
 	private LocalDateTime saidaCliente;
+
+	@Column(name = "aberta", length = 20, nullable = false, unique = false)
 	private boolean aberta;
 	
+	@ManyToOne
+    @JoinColumn(name = "idCliente", nullable = false)
 	private Cliente cliente;
-	private Mesa mesa;
-	private List<Item> produtos = new ArrayList();
 
+	@ManyToOne
+    @JoinColumn(name = "idMesa", nullable = false)
+	private Mesa mesa;
+
+	@OneToMany(mappedBy = "requisicao")
+	private List<Item> produtos = new ArrayList();
 	LocalDateTime now = LocalDateTime.now();
 	
 	public Requisicao(int qtdPessoas, Cliente cliente) {
@@ -31,16 +61,8 @@ public class Requisicao {
 		entradaCliente = LocalDateTime.now();
 	}
 	// GETTERS E SETTERS
-	public Long getIdRequisicao() {
+	public long getIdRequisicao() {
 		return idRequisicao;
-	}
-
-	/**
-	 * Define o identificador único da requisição.
-	 * @param idRequisicao identificador da requisição.
-	 */
-	public void setIdRequisicao(Long idRequisicao) {
-		this.idRequisicao = idRequisicao;
 	}
 
 	public int getQtdPessoas() {
@@ -123,9 +145,9 @@ public class Requisicao {
 	 */
 	public void adicionarProduto(int idProd) {
 		Cardapio cardapio = new Cardapio();
-		for(int i = 0; i < cardapio.getCardapio().size(); i++){
-			if(cardapio.getCardapio().get(i).getId() == idProd){
-				produtos.add(cardapio.getCardapio().get(i));
+		for(int i = 0; i < cardapio.getProdutos().size(); i++){
+			if(cardapio.getProdutos().get(i).getId() == idProd){
+				produtos.add(cardapio.getProdutos().get(i));
 			}
 		}
 	}
