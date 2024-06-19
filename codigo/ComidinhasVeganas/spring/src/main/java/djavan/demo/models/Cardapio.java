@@ -1,5 +1,6 @@
 package djavan.demo.models;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-@Entity
+
+
 public class Cardapio {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 
 	@OneToMany
 	private List<Item> itens = new ArrayList<>();
@@ -25,6 +26,7 @@ public class Cardapio {
 	public Integer getId() {
 		return id;
 	}
+
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -46,9 +48,12 @@ public class Cardapio {
 		this.itens = Itens;
 	}
 
+
 	// toString, se necessário
 	@Override
 	public String toString() {
 		return "Cardapio [id=" + id + ", Itens=" + itens + "]";
 	}
+
+
 }

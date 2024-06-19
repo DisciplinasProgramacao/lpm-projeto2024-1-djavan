@@ -1,5 +1,6 @@
 package djavan.demo.models;
 
+
 public enum Item {
 	
 	MOQUECA_DE_PALMITO(1, "Moqueca de Palmito", 32.00),
@@ -20,6 +21,7 @@ public enum Item {
 
 
 	Item(Integer id, String nome, Double value) {
+
 		this.id = id;
 		this.nome = nome;
 		this.value = value;
@@ -29,6 +31,7 @@ public enum Item {
 		return id;
 	}
 
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -36,6 +39,7 @@ public enum Item {
 	public String getNome() {
 		return nome;
 	}
+
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -45,6 +49,7 @@ public enum Item {
 		return value;
 	}
 
+
 	public void setValue(Double value) {
 		this.value = value;
 	}
@@ -52,6 +57,8 @@ public enum Item {
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", nome=" + nome + ", value=" + value + "]";
+
+
 	}
 
 }
