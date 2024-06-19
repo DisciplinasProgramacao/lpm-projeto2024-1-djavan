@@ -2,10 +2,13 @@ package djavan.demo.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.print.DocFlavor.READER;
 
-public class Restaurante {
+public class Restaurante extends Throwable {
+    private Mesa mesa;
+    private Requisicao requisicao;
     private ArrayList<Mesa> listaMesa = new ArrayList<>(10);
     private ArrayList<Requisicao> requisicoesAtendidas = new ArrayList<>();
     private ArrayList<Requisicao> fila = new ArrayList<>();
@@ -39,12 +42,12 @@ public class Restaurante {
     * @param qtdPessoas - busca se a mesa com a quantidade de cadeiras que o cliente precisa esta livre
     * @return caso a a mesa esteja livre retorna a mesa caso nao retorna null
     */
-    public Mesa buscarMesa(int qtdPessoas){
-        for(Mesa mesa : listaMesa){
-            if(mesa.mesaPodeSerOcupada)
-                return mesa;
+    public Mesa buscarMesa (int qtdPessoas) throws Exception{
+        for(Mesa mesaBusca : listaMesa){
+            if(mesa.mesaPodeSerOcupada) 
+                return mesaBusca;
         }
-        return null;
+        throw new Exception("Mesa para " + qtdPessoas + " pessoas nao encontrada.");
     }
 
     /**
@@ -53,15 +56,19 @@ public class Restaurante {
      * @return retorna a requisicao criada
      */
     public Requisicao abrirRequisicao(Cliente cliente, int qtdPessoas){
-        Mesa mesaRequisicao = buscarMesa(qtdPessoas);
+        try{
+            mesa = buscarMesa(qtdPessoas);
+        }catch(Exception e){
+            System.out.println("Erro: " + e.getMessage());
+        }
         
-        if (!mesaRequisicao.mesaPodeSerOcupada) {
-            Requisicao requisicao = new Requisicao(qtdPessoas, cliente); 
+        if (!mesa.mesaPodeSerOcupada) {
+            requisicao = new Requisicao(qtdPessoas, cliente); 
             fila.add(requisicao);
             return requisicao;
         }else{
-            Requisicao requisicao = new Requisicao(qtdPessoas, cliente, mesaRequisicao); 
-            mesaRequisicao.ocupar();
+            requisicao = new Requisicao(qtdPessoas, cliente, mesa); 
+            mesa.ocupar();
             requisicoesAtendidas.add(requisicao);
             return requisicao;
         }
@@ -71,17 +78,16 @@ public class Restaurante {
      * @param requisicao - passa o parametro requisicao fechar o pedido
      * @implNote Chama o metodo da classe requisicao para fechar trocar o status da mesa para ocupada depois chama o metodo verificarFilaEspera para verificar a fila de espera
      */
-    public Requisicao finalizarReq(Requisicao requisicao) {
+    public Requisicao finalizarRequisicao(Requisicao requisicao) {
        for(int i = 0; i < requisicoesAtendidas.size(); i++){
             if (requisicoesAtendidas.get(i).getIdRequisicao() == requisicao.getIdRequisicao()) {
-                pedidosFechados.add(requisicoesAtendidas.get(i));
-                requisicoesAtendidas.remove(i);
                 requisicao.finalizarReq(requisicao.getMesa());
+                requisicao = requisicoesAtendidas.get(i);
                 break;
             }
        }
-       verificarFilaEspera();
        mostrarConta(requisicao);
+       verificarFilaEspera();
        return requisicao;
     }
 
@@ -91,7 +97,12 @@ public class Restaurante {
     public void verificarFilaEspera(){
         for(int i = 0; i < fila.size(); i++){
             Requisicao requisicaoAtual = fila.get(i);
-            Mesa mesa = buscarMesa(requisicaoAtual.getQtdPessoas());
+            try {
+                mesa = buscarMesa(requisicaoAtual.getQtdPessoas());
+            }catch(Exception e){
+                System.out.println("Erro: " + e.getMessage());
+            }
+           
             if(mesa == null) break;
             abrirRequisicao(requisicaoAtual.getCliente(), requisicaoAtual.getQtdPessoas());
             fila.remove(fila.get(i));
@@ -102,14 +113,15 @@ public class Restaurante {
      * @param id
      * @return retorna a requisicao pedida
      */
-    public Requisicao localizarRequisicao(int id) {
-        Requisicao requisicao;
+    public Requisicao localizarRequisicao(int id) throws Exception {
         for(int i = 0; i <= requisicoesAtendidas.size(); i++) {
             if (requisicoesAtendidas.get(i).getIdRequisicao() == id){
-                return requisicoesAtendidas.get(i);
+                return requisicao = requisicoesAtendidas.get(i);
             }
         }
+        throw new Exception("Requisicao com id " + id + " nao encontrada");
     }
+    
     /**
      * Esse método itera sobre todos os itens da enumeração "Cardápio" usando o values.
      * Para cada item ele chama o método toString do item. 
