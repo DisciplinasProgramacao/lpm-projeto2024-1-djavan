@@ -43,7 +43,7 @@ public class PedidoService {
     @Transactional
     public Pedido update(Pedido obj) {
         Pedido newObj = findById(obj.getId());
-        newObj.setDataPedido(obj.getDataPedido());
+
         return this.pedidoRepository.save(newObj);
     }
 
