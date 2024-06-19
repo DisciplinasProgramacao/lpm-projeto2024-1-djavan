@@ -68,4 +68,21 @@ public class RequisicaoController {
         requisicaoService.encerrar(requisicaoAEncerrar, mesaOcupada);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Endpoint para adicionar um produto em uma requisição.
+
+    Faltam alguns métodos na Model de Pedido para rodar isso corretamente! 
+
+    @PutMapping("/{id}/adicionar-pedido")
+    public ResponseEntity<Void> adicionarProduto(@PathVariable Long id, @Valid @RequestBody Item item) {
+        Requisicao requisicao = requisicaoService.findById(id);
+        if (requisicao == null) {
+            return ResponseEntity.notFound().build();
+        }
+        requisicaoService.pedido.adicionarItem(requisicao);
+        return ResponseEntity.noContent().build();
+    }
+*/
+
 }
