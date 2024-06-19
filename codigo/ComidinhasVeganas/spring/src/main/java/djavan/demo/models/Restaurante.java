@@ -6,6 +6,7 @@ import java.util.List;
 import javax.print.DocFlavor.READER;
 
 public class Restaurante {
+    private Mesa mesa;
     private Requisicao requisicao;
     private ArrayList<Mesa> listaMesa = new ArrayList<>(10);
     private ArrayList<Requisicao> requisicoesAtendidas = new ArrayList<>();
@@ -42,10 +43,10 @@ public class Restaurante {
     */
     public Mesa buscarMesa(int qtdPessoas){
         for(Mesa mesa : listaMesa){
-            if(mesa.mesaPodeSerOcupada)
+            if(mesa.mesaPodeSerOcupada) 
                 return mesa;
         }
-        return null;
+        return mesa;
     }
 
     /**
