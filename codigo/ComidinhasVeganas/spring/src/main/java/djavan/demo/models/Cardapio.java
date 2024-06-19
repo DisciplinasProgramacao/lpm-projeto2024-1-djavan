@@ -16,9 +16,8 @@ public class Cardapio {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToMany(mappedBy = "cardapio")
+	@OneToMany
 	private List<Item> itens = new ArrayList<>();
-
 
 	public Cardapio() {
 	}

@@ -34,7 +34,6 @@ public class PedidoService {
     @Transactional
     public Pedido create(Pedido obj) {
         Cliente cliente = this.clienteService.findById(obj.getCliente().getId()); //validação que o usuário existe
-        obj.setId(null);
         obj.setCliente(cliente);
         obj = this.pedidoRepository.save(obj);
         return obj;
@@ -43,8 +42,6 @@ public class PedidoService {
     @Transactional
     public Pedido update(Pedido obj) {
         Pedido newObj = findById(obj.getId());
-        newObj.setDataPedido(obj.getDataPedido());
-        newObj.setHoraPedido(obj.getHoraPedido());
         return this.pedidoRepository.save(newObj);
     }
 
