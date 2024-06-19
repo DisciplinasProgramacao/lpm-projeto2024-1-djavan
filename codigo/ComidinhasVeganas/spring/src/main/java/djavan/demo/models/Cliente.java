@@ -40,4 +40,8 @@ import jakarta.persistence.Table;
     public Long getId() {
         return id;
     }
+
+    public void setNome(String nomeCliente) {
+        nome = nomeCliente;
+    }
 }
