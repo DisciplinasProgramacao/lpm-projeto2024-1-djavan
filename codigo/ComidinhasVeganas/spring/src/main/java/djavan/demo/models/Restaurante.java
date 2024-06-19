@@ -6,6 +6,7 @@ import java.util.List;
 import javax.print.DocFlavor.READER;
 
 public class Restaurante {
+    private Requisicao requisicao;
     private ArrayList<Mesa> listaMesa = new ArrayList<>(10);
     private ArrayList<Requisicao> requisicoesAtendidas = new ArrayList<>();
     private ArrayList<Requisicao> fila = new ArrayList<>();
@@ -56,11 +57,11 @@ public class Restaurante {
         Mesa mesaRequisicao = buscarMesa(qtdPessoas);
         
         if (!mesaRequisicao.mesaPodeSerOcupada) {
-            Requisicao requisicao = new Requisicao(qtdPessoas, cliente); 
+            requisicao = new Requisicao(qtdPessoas, cliente); 
             fila.add(requisicao);
             return requisicao;
         }else{
-            Requisicao requisicao = new Requisicao(qtdPessoas, cliente, mesaRequisicao); 
+            requisicao = new Requisicao(qtdPessoas, cliente, mesaRequisicao); 
             mesaRequisicao.ocupar();
             requisicoesAtendidas.add(requisicao);
             return requisicao;
@@ -102,7 +103,6 @@ public class Restaurante {
      * @return retorna a requisicao pedida
      */
     public Requisicao localizarRequisicao(int id) {
-        Requisicao requisicao;
         for(int i = 0; i <= requisicoesAtendidas.size(); i++) {
             if (requisicoesAtendidas.get(i).getIdRequisicao() == id){
                 requisicao = requisicoesAtendidas.get(i);
