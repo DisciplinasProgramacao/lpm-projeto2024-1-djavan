@@ -128,8 +128,8 @@ public class Restaurante extends Throwable {
      */
     public static void exibirCardapio(){
         Cardapio item = new Cardapio();
-        for (int i = 0; i <= item.getProdutos().size(); i++) { 
-               System.out.println(item.getProdutos().get(i).toString());
+        for (int i = 0; i <= item.getCardapio().size(); i++) { 
+               System.out.println(item.getCardapio().get(i).toString());
         }
     }
 
