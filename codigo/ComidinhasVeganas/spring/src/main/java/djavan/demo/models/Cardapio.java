@@ -3,8 +3,6 @@ package djavan.demo.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,10 +37,10 @@ public class Cardapio {
 	
 	public List<Item> getCardapio(){
 		List<Item> listaItem = new ArrayList<>();
-		for (Item item : ) {
-			
+		for (Item x : Item.values()) {
+			listaItem.add(x);
 		}
-		
+		return listaItem;
 	}
 
 	public void setItens(List<Item> Itens) {
@@ -52,6 +50,6 @@ public class Cardapio {
 	// toString, se necessário
 	@Override
 	public String toString() {
-		return "Cardapio [id=" + id + ", Itens=" + Itens + "]";
+		return "Cardapio [id=" + id + ", Itens=" + itens + "]";
 	}
 }
