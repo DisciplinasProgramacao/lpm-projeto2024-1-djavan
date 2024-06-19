@@ -1,4 +1,6 @@
-import static org.junit.Assert.assertTrue;
+package djavan.demo;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import djavan.demo.models.Mesa;
 
 public class MesaTeste {
     

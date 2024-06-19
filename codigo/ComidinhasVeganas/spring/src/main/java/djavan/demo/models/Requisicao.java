@@ -65,6 +65,14 @@ public class Requisicao {
 		return idRequisicao;
 	}
 
+	/**
+	 * Define o identificador único da requisição.
+	 * @param idRequisicao identificador da requisição.
+	 */
+	public void setIdRequisicao(Long idRequisicao) {
+		this.idRequisicao = idRequisicao;
+	}
+
 	public int getQtdPessoas() {
 		return qtdPessoas;
 	}
@@ -145,9 +153,9 @@ public class Requisicao {
 	 */
 	public void adicionarProduto(int idProd) {
 		Cardapio cardapio = new Cardapio();
-		for(int i = 0; i < cardapio.getProdutos().size(); i++){
-			if(cardapio.getProdutos().get(i).getId() == idProd){
-				produtos.add(cardapio.getProdutos().get(i));
+		for(int i = 0; i < cardapio.getCardapio().size(); i++){
+			if(cardapio.getCardapio().get(i).getId() == idProd){
+				produtos.add(cardapio.getCardapio().get(i));
 			}
 		}
 	}
