@@ -1,100 +1,48 @@
 package djavan.demo.models;
 
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
-
-import jakarta.persistence.*;
-
+/**
+ * Entidade que representa um pedido no sistema.
+ */
 @Entity
 @Table(name = "pedido")
 public class Pedido {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "cardapio", nullable = false)
-    private Cardapio cardapio;
-
-    @Column(name = "data_pedido", nullable = false)
-    private String dataPedido;
-
-    @Column(name = "hora_pedido", nullable = false)
-    private String horaPedido;
-
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false, updatable = false)
-    private Cliente cliente;
-
-    @Column(name = "approved")
-    private Boolean approved;
-
-    @Column(name = "manager_id", nullable = false)
-    private String managerId;
-
-    public Pedido() {}
-
-    public Pedido(Long id, String cardapio, String dataPedido, String horaPedido, Cliente cliente, String managerId) {
-        this.id = id;
-        this.dataPedido = dataPedido;
-        this.horaPedido = horaPedido;
-        this.cliente= cliente;
-        this.managerId = managerId;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+	private Long id;
 	
+  @Column(name = "valor_pedido", nullable = false)
+	private Double valorPedido;
 	
-	@ManyToOne
 	private Requisicao requisicao;
-
-	public Pedido(Cardapio cardapio) {
-		this.cardapio = cardapio;
+	
+	private List<Cardapio> cardapio;
+  
+	public Long getId() {
+		return this.id;
 	}
 
-	public Cardapio getcardapio() {
-		return cardapio;
+
+	public Double getValorPedido() {
+		return valorPedido;
 	}
 
-	public void setcardapio(Cardapio cardapio) {
-		this.cardapio = cardapio;
+	/**
+	 * Adiciona um produto ao pedido.
+	 *
+	 * @param produto Produto a ser adicionado ao pedido.
+	 */
+	public void adicionarProduto(Produto produto) {
+		this.produtos.add(produto);
+		this.valorPedido += produto.getValue();
 	}
-
-	public double getValor() {
-		return cardapio.getValor();
-	}
-
-   
-	public Object getHoraPedido() {
-		return horaPedido;
-	}
-
-	public void setHoraPedido(Object horaPedido) {
-		this.horaPedido = (String) horaPedido;
-	}
-
-    public Object getDataPedido() {
-       return  this.dataPedido = (String) dataPedido;
-
-    }
-
-    public void setDataPedido(Object dataPedido) {
-       this.dataPedido = (String) dataPedido;
-    }
-
-	public void setCliente(Cliente cliente2) {
-		this.cliente = cliente2;
-	}
-
-	public Cliente getCliente() {
-		return this.cliente;
-	}
-
 }
