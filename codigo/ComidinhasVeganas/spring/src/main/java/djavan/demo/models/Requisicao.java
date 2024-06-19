@@ -292,10 +292,14 @@ public class Requisicao {
 	 * @param mesa mesa a ser liberada.
 	 */
 	public void finalizarReq(Mesa mesa) {
-
+		
+		if (mesa != null) {
 		setSaidaCliente(LocalDate.now());
-
 		mesa.desocupar();
+		}
 
+		if(status) {
+			setStatus(false);
+		}
 	}
 }
