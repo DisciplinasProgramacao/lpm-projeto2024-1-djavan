@@ -71,17 +71,16 @@ public class Restaurante {
      * @param requisicao - passa o parametro requisicao fechar o pedido
      * @implNote Chama o metodo da classe requisicao para fechar trocar o status da mesa para ocupada depois chama o metodo verificarFilaEspera para verificar a fila de espera
      */
-    public Requisicao finalizarReq(Requisicao requisicao) {
+    public Requisicao finalizarRequisicao(Requisicao requisicao) {
        for(int i = 0; i < requisicoesAtendidas.size(); i++){
             if (requisicoesAtendidas.get(i).getIdRequisicao() == requisicao.getIdRequisicao()) {
-                pedidosFechados.add(requisicoesAtendidas.get(i));
-                requisicoesAtendidas.remove(i);
                 requisicao.finalizarReq(requisicao.getMesa());
+                requisicao = requisicoesAtendidas.get(i);
                 break;
             }
        }
-       verificarFilaEspera();
        mostrarConta(requisicao);
+       verificarFilaEspera();
        return requisicao;
     }
 
@@ -106,10 +105,12 @@ public class Restaurante {
         Requisicao requisicao;
         for(int i = 0; i <= requisicoesAtendidas.size(); i++) {
             if (requisicoesAtendidas.get(i).getIdRequisicao() == id){
-                return requisicoesAtendidas.get(i);
+                requisicao = requisicoesAtendidas.get(i);
             }
         }
+        return requisicao;
     }
+    
     /**
      * Esse método itera sobre todos os itens da enumeração "Cardápio" usando o values.
      * Para cada item ele chama o método toString do item. 
