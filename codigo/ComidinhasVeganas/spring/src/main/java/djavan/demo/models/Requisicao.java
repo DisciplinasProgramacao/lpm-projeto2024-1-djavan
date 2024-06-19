@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,14 +37,21 @@ public class Requisicao {
 
 	@Column(name = "aberta", length = 20, nullable = false, unique = false)
 	private boolean aberta;
+
+	@Column(name = "valorTotal", length = 20, nullable = false, unique = false)
+	private double valorTotal;
 	
 	@ManyToOne
     @JoinColumn(name = "idCliente", nullable = false)
 	private Cliente cliente;
 
-	@ManyToOne
+	@OneToOne
     @JoinColumn(name = "idMesa", nullable = false)
 	private Mesa mesa;
+
+	@OneToOne
+    @JoinColumn(name = "idPedido", nullable = false)
+	private Pedido pedido;
 
 	@OneToMany(mappedBy = "requisicao")
 	private List<Item> produtos = new ArrayList();
@@ -161,10 +169,19 @@ public class Requisicao {
 	}
 
 	/**
-	 * Calcula o valor total dos pedidos da requisição.
+	 * Retorna o valor total do pedido da requisição.
 	 * @return valor total.
 	 */
 	public double calcularValorTotal() {
-		return produtos.stream().mapToDouble(c -> produto);
+		return pedido.getValorTotal();
+	}
+
+		/**
+	 * Calcula o valor da requisição por cliente.
+	 * @return valor por cliente.
+	 */
+	public double calcularValorPorCliente() {
+		double valorPorCliente = pedido.getValorTotal()/qtdPessoas;
+		return valorPorCliente;
 	}
 }
