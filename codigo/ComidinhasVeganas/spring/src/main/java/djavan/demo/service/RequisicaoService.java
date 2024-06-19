@@ -2,6 +2,8 @@ package djavan.demo.service;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import djavan.demo.models.Item;
 import djavan.demo.models.Mesa;
 import djavan.demo.models.Requisicao;
 import djavan.demo.repositories.RequisicaoRepository;
@@ -43,4 +45,13 @@ public class RequisicaoService {
         requisicaoEncerrada.finalizarReq(mesaOcupada);
         return this.requisicaoRepository.save(requisicaoEncerrada);
     }
+
+    @Transactional
+    public Requisicao adicionarProduto(Requisicao requisicao, Item itemASerAdicionado){ 
+        // Requisicao requisicao = findById(requisicao.getIdRequisicao());
+        // requisicao.pedido.adicionarItem(itemASerAdicionado);
+        return this.requisicaoRepository.save(requisicao);
+    }
+
+
 }
