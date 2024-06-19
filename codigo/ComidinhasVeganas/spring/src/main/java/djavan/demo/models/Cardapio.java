@@ -1,12 +1,15 @@
 package djavan.demo.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Cardapio {
@@ -16,7 +19,7 @@ public class Cardapio {
 	private Integer id;
 
 	@OneToMany(mappedBy = "cardapio")
-	private List<Produto> produtos = new ArrayList<>();
+	private List<Item> itens = new ArrayList<>();
 
 
 	public Cardapio() {
@@ -30,17 +33,25 @@ public class Cardapio {
 		this.id = id;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
+	public List<Item> getItens() {
+		return itens;
+	}
+	
+	public List<Item> getCardapio(){
+		List<Item> listaItem = new ArrayList<>();
+		for (Item item : ) {
+			
+		}
+		
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setItens(List<Item> Itens) {
+		this.itens = Itens;
 	}
 
 	// toString, se necessário
 	@Override
 	public String toString() {
-		return "Cardapio [id=" + id + ", produtos=" + produtos + "]";
+		return "Cardapio [id=" + id + ", Itens=" + Itens + "]";
 	}
 }
