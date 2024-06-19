@@ -22,8 +22,10 @@ public class Pedido {
 	
 	private double taxaServico;
 	
-	private Item item;
+	private List<Item> itens = new ArrayList<>();
 	
+	
+
 	private boolean aberto;
 	
 	@ManyToOne
@@ -73,14 +75,14 @@ public class Pedido {
 		this.taxaServico = taxaServico;
 	}
 
-	public Item getItem() {
-		return item;
+	public List<Item> getItens() {
+		return itens;
 	}
 
-	public void setItem(Item item) {
-		this.item = item;
+	public void setItens(List<Item> itens) {
+		this.itens = itens;
 	}
-
+	
 	public boolean isAberto() {
 		return aberto;
 	}
