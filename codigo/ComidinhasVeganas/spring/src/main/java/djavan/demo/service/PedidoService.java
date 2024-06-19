@@ -1,17 +1,12 @@
 package djavan.demo.service;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import djavan.demo.models.Cliente;
 import djavan.demo.models.Pedido;
-import djavan.demo.models.Produto;
 import djavan.demo.repositories.PedidoRepository;
-
 
 @Service
 public class PedidoService {
@@ -61,14 +56,15 @@ public class PedidoService {
         return this.pedidoRepository.findAll();
     }
 
-    public Pedido adicionarProduto(Long id, Produto produto) {
-        Pedido pedido = findById(id);
-        if (pedido != null) {
-            pedido.adicionarProduto(produto);
-            return pedidoRepository.save(pedido);
-        }
-        return null;
-    }
+    // Método deve ser atualizado! Agora é Item.
+    // public Pedido adicionarProduto(Long id, Produto produto) {
+    //     Pedido pedido = findById(id);
+    //     if (pedido != null) {
+    //         pedido.adicionarProduto(produto);
+    //         return pedidoRepository.save(pedido);
+    //     }
+    //     return null;
+    // }
 
 }
 
