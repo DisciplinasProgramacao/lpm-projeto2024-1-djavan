@@ -44,4 +44,8 @@ import jakarta.persistence.Table;
     public void setNome(String nomeCliente) {
         nome = nomeCliente;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
