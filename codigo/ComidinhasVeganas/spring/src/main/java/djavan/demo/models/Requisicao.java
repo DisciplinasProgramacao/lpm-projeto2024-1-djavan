@@ -52,10 +52,7 @@ public class Requisicao {
     @JoinColumn(name = "idPedido", nullable = false)
 	private Pedido pedido;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@OneToMany(mappedBy = "requisicao")
-	private List<Item> produtos = new ArrayList();
-	LocalDateTime now = LocalDateTime.now();
+	@SuppressWarnings({ "unchecked", "rawtypes" })	
 	
 	public Requisicao(int qtdPessoas, Cliente cliente) {
 		this.qtdPessoas = qtdPessoas;
@@ -136,15 +133,6 @@ public class Requisicao {
 	}
 
 	/**
-	 * Retorna a lista de produtos.
-	 *
-	 * @return a lista de produtos
-	 */
-	public List<Item> getProdutos() {
-		return produtos;
-	}
-
-	/**
 	 * Gera o código hash baseado no identificador da requisição.
 	 * @return código hash.
 	 */	
@@ -195,12 +183,7 @@ public class Requisicao {
 	 * @param cardapio cardápio do pedido.
 	 */
 	public void adicionarProduto(int idProd) {
-		Cardapio cardapio = new Cardapio();
-		for(int i = 0; i < cardapio.getCardapio().size(); i++){
-			if(cardapio.getCardapio().get(i).getId() == idProd){
-				produtos.add(cardapio.getCardapio().get(i));
-			}
-		}
+		pedido.adicionarItem(idProd);
 	}
 
 	/**
@@ -216,7 +199,6 @@ public class Requisicao {
 	 * @return valor por cliente.
 	 */
 	public double calcularValorPorCliente() {
-		double valorPorCliente = pedido.getValorTotal()/qtdPessoas;
-		return valorPorCliente;
+		return pedido.getItens().stream().mapToDouble(Item::getValue).sum();
 	}
 }
