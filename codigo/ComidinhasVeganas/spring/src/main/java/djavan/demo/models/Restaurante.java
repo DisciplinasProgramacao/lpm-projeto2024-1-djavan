@@ -1,151 +1,265 @@
 package djavan.demo.models;
-import java.time.LocalDate;
+
+/** 
+ * MIT License
+ *
+ * Copyright(c) 2024 João Caram <caram@pucminas.br>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import javax.print.DocFlavor.READER;
+/**
+  * Classe restaurante: controla todo o processo do LPM Comidinhas Veganas a partir das outras classes. Recebe comandos do app
+  e retorna respostas a ele para interação com o usuário.
+  */
+public class Restaurante {
 
-public class Restaurante extends Throwable {
-    private Mesa mesa;
-    private Requisicao requisicao;
-    private ArrayList<Mesa> listaMesa = new ArrayList<>(10);
-    private ArrayList<Requisicao> requisicoesAtendidas = new ArrayList<>();
-    private ArrayList<Requisicao> fila = new ArrayList<>();
-    private ArrayList<Requisicao> pedidosFechados = new ArrayList<>();
+	private static int MAX_FILA = 1000;
+	private static int MAX_MESAS = 10;
+	private static int MAX_CLIENTES = 1000;
+	private Mesa[] mesas;
+	private Cliente[] clientes;
+	private List<Requisicao> atendidas;
+	private List<Requisicao> espera;
+	private Cardapio cardapio;
+	private int quantClientes;
+	private int quantMesas;
+	
+	private int requisicoesEmEspera;
 
-    public Restaurante(){
-        for(int i = 1; i <= 10; i++){
-            if(i < 5)
-                listaMesa.add(new Mesa(i, 4, true));  
-            else if(i < 9 && i > 4)  
-                listaMesa.add(new Mesa(i, 6,true));
-            else
-                listaMesa.add(new Mesa(i, 8, true));
-        }
-    }
+	/**
+	 * Cria um restaurante conforme a configuração de mesas do enunciado. 
+	 */
+	public Restaurante() {
+		mesas = new Mesa[MAX_MESAS];
+		clientes = new Cliente[MAX_CLIENTES];
+		atendidas = new ArrayList<>(MAX_FILA);
+		espera = new ArrayList<>(MAX_FILA);
+		quantMesas = quantClientes =  requisicoesEmEspera = 0;
+		cardapio = new Cardapio();
+		criarMesas();
+	}
 
-    public ArrayList<Mesa> getListaMesa() {
-        return listaMesa;
-    }
-    public ArrayList<Requisicao> getRequisicoesAtendidas() {
-        return requisicoesAtendidas;
-    }
-    public ArrayList<Requisicao> getFila() {
-        return fila;
-    }
-    public ArrayList<Requisicao> getPedidosFechados() {
-        return pedidosFechados;
-    }
-    
-    /**
-    * @param qtdPessoas - busca se a mesa com a quantidade de cadeiras que o cliente precisa esta livre
-    * @return caso a a mesa esteja livre retorna a mesa caso nao retorna null
-    */
-    public Mesa buscarMesa (int qtdPessoas) throws Exception{
-        for(Mesa mesaBusca : listaMesa){
-            if(mesa.mesaPodeSerOcupada) 
-                return mesaBusca;
-        }
-        throw new Exception("Mesa para " + qtdPessoas + " pessoas nao encontrada.");
-    }
+	/**
+	 * Encapsula a criação de mesas para o restaurante, conforme especificado.
+	 */
+	private void criarMesas() {
+		for (int i = 0; i < 4; i++) {
+			mesas[quantMesas] = new Mesa(4);
+			quantMesas++;
+		}
+		for (int i = 0; i < 4; i++) {
+			mesas[quantMesas] = new Mesa(6);
+			quantMesas++;
 
-    /**
-     * @param cliente - para guardar na requisicao
-     * @param qtdPessoas - para buscar se a mesa que o cliente deseja esta livre
-     * @return retorna a requisicao criada
-     */
-    public Requisicao abrirRequisicao(Cliente cliente, int qtdPessoas){
-        try{
-            mesa = buscarMesa(qtdPessoas);
-        }catch(Exception e){
-            System.out.println("Erro: " + e.getMessage());
-        }
-        
-        if (!mesa.mesaPodeSerOcupada) {
-            requisicao = new Requisicao(qtdPessoas, cliente); 
-            fila.add(requisicao);
-            return requisicao;
-        }else{
-            requisicao = new Requisicao(qtdPessoas, cliente, mesa); 
-            mesa.ocupar();
-            requisicoesAtendidas.add(requisicao);
-            return requisicao;
-        }
-    }
+		}
+		for (int i = 0; i < 2; i++) {
+			mesas[quantMesas] = new Mesa(8);
+			quantMesas++;
 
-    /**
-     * @param requisicao - passa o parametro requisicao fechar o pedido
-     * @implNote Chama o metodo da classe requisicao para fechar trocar o status da mesa para ocupada depois chama o metodo verificarFilaEspera para verificar a fila de espera
-     */
-    public Requisicao finalizarRequisicao(Requisicao requisicao) {
-       for(int i = 0; i < requisicoesAtendidas.size(); i++){
-            if (requisicoesAtendidas.get(i).getIdRequisicao() == requisicao.getIdRequisicao()) {
-                requisicao.finalizarReq(requisicao.getMesa());
-                requisicao = requisicoesAtendidas.get(i);
-                break;
-            }
-       }
-       mostrarConta(requisicao);
-       verificarFilaEspera();
-       return requisicao;
-    }
+		}
+	}
 
-    /**    
-     * @implNote Apos Finalizar a requisicao esse metodo e chamado para verificar se na lista de espera algum cliente corresponde a mesa que ficou vazia
-    */
-    public void verificarFilaEspera(){
-        for(int i = 0; i < fila.size(); i++){
-            Requisicao requisicaoAtual = fila.get(i);
-            try {
-                mesa = buscarMesa(requisicaoAtual.getQtdPessoas());
-            }catch(Exception e){
-                System.out.println("Erro: " + e.getMessage());
-            }
-           
-            if(mesa == null) break;
-            abrirRequisicao(requisicaoAtual.getCliente(), requisicaoAtual.getQtdPessoas());
-            fila.remove(fila.get(i));
-        }
-    }
+	/**
+	 * Adiciona um cliente no cadastro do restaurante, caso ele não seja nulo
+	 * @param novo Cliente a ser cadastrado.
+	 */
+	public void addCliente(Cliente novo) {
+		if(novo!=null){
+			clientes[quantClientes] = novo;
+			quantClientes++;
+		}
+	}
 
-    /**
-     * @param id
-     * @return retorna a requisicao pedida
-     */
-    public Requisicao localizarRequisicao(int id) throws Exception {
-        for(int i = 0; i <= requisicoesAtendidas.size(); i++) {
-            if (requisicoesAtendidas.get(i).getIdRequisicao() == id){
-                return requisicao = requisicoesAtendidas.get(i);
-            }
-        }
-        throw new Exception("Requisicao com id " + id + " nao encontrada");
-    }
-    
-    /**
-     * Esse método itera sobre todos os itens da enumeração "Cardápio" usando o values.
-     * Para cada item ele chama o método toString do item. 
-     */
-    public static void exibirCardapio(){
-        Cardapio item = new Cardapio();
-        for (int i = 0; i <= item.getCardapio().size(); i++) { 
-               System.out.println(item.getCardapio().get(i).toString());
-        }
-    }
+	/**
+	 * Localiza um cliente no restaurante, usando seu id
+	 * @param idCli ID do cliente a ser localizado
+	 * @return Cliente localizado ou null, se ele não existir
+	 */
+	public Cliente localizarCliente(int idCli) {
+		boolean achou = false;
+		Cliente cliente = null;
+		for (int i = 0; i < quantClientes && !achou; i++) {
+			if (clientes[i].hashCode() == idCli) {
+				achou = true;
+				cliente = clientes[i];
+			}
+		}
+		return cliente;
+	}
 
-    public void incluirItem(int idProd, int numMesa){
-        for(int i = 0; i < requisicoesAtendidas.size(); i++){
-            if (requisicoesAtendidas.get(i).getMesa().getIdMesa() == numMesa) {
-                requisicoesAtendidas.get(i).adicionarProduto(idProd);
-            }
-        }
-    }
+	/**
+	 * Encapsula o processo de procurar uma mesa disponível para "quantPessoas". Retorna uma mesa disponível para pelo menos esta quantidade
+	 * de pessoas (podendo ser mais), ou nulo se não houver mesas para esta quantidade.
+	 * @param quantPessoas Quantidade de pessoas a ser atendida na mesa.
+	 * @return Mesa para esta quantidade de pessoas ou nulo, se não houver mesa liberada.
+	 */
+	private Mesa localizarMesaDisponivel(int quantPessoas) {
+		Mesa liberada = null;
+		for (int i = 0; i < quantMesas && liberada == null; i++) {
+			if (mesas[i].estahLiberada(quantPessoas))
+				liberada = mesas[i];
+		}
+		return liberada;
+	}
 
-    public static void mostrarConta(Requisicao requisicao) {
-        System.out.println("Itens consumidos:");
-        for (int i = 0; i <= requisicao.getProdutos().size(); i++) {
-            System.out.println(requisicao.getProdutos().get(i).getNome() + " - R$ " + requisicao.getProdutos().get(i).getValue());
-        }
-        System.out.println("Total: R$ " + requisicao.calcularValorTotal());
-    }
+	/**
+	 * Encerra um atendimento/requisição, a partir do número da mesa sendo atendida. Retorna a requisição encerrada ou nulo.
+	 * @param idMesa Número da mesa que quer encerrar o atendimento
+	 * @return A requisição encerrada, se houver, ou nulo caso caso não exista ou já estivesse encerrada.
+	 */
+	public Requisicao encerrarAtendimento(int idMesa) {
+		Requisicao encerrada = 
+								atendidas.stream()
+										.filter(req -> req.ehDaMesa(idMesa) && !req.estahEncerrada())
+										.findFirst()
+										.orElse(null);
+		if(encerrada!=null)
+			encerrada.encerrar();										
+		return encerrada;
+	}
+
+	/**
+	 * Processa a fila de espera de atendimentos, tentando alocar mesa para uma destas requisições. Só atende uma requisição por vez, a que estiver
+	 * mais à frente da fila e puder ser atendida com as mesas do momento.
+	 * @return Requisição atendida ou nulo, se nenhuma puder ser atentida.
+	 */
+	public Requisicao processarFila() {
+		Requisicao atendida = null;
+		for (int i = 0; i < requisicoesEmEspera && atendida == null; i++) {
+			Requisicao requisicao = espera.get(i);
+			Mesa mesaLivre = localizarMesaDisponivel(requisicao.getQuantPessoas());
+			if (mesaLivre != null) {
+				atenderRequisicao(requisicao, mesaLivre);
+				retirarDaFila(i);
+				atendida = requisicao;
+			}
+		}
+		return atendida;
+	}
+
+	/**
+	 * Encapsula a retirada da fila após o atendimento de uma requisição
+	 * @param pos Posição para retirada da fila. 
+	 */
+	private void retirarDaFila(int pos) {
+		espera.remove(pos);
+		requisicoesEmEspera--;
+		
+	}
+
+	/**
+	 * Coloca uma nova requisição na fila de espera, caso ela não seja nula
+	 * @param novaRequisicao Requisição para entrar na fila (não deve ser nula)
+	 */
+	public void registrarRequisicao(Requisicao novaRequisicao) {
+		if(novaRequisicao!=null){
+			espera.add(novaRequisicao);
+			requisicoesEmEspera++;
+		}
+	}
+
+	/**
+	 * Encapsula a chamada de atendimento da requisição para uma mesa
+	 * @param requisicao Requisição a ser atendida
+	 * @param mesa Mesa a ser alocada.
+	 */
+	private void atenderRequisicao(Requisicao requisicao, Mesa mesa) {
+		requisicao.alocarMesa(mesa);
+		atendidas.add(requisicao);
+	}
+
+	/**
+	 * Cria um relatório com o estado de cada uma das mesas do restaurante (liberada/ocupada + capacidade)
+	 * @return Relatório com informações de todas as mesas do restaurante.
+	 */
+	public String statusMesas() {
+		StringBuilder livres = new StringBuilder("Mesas livres: \n");
+		StringBuilder ocupadas = new StringBuilder("Mesas em atendimento: \n");
+		for (int i = 0; i < quantMesas; i++) {
+			if (mesas[i].estahLiberada(1)) {
+				livres.append(mesas[i] + "\n");
+			}
+			else {
+				ocupadas.append(mesas[i] + "\n");
+			}
+		}
+		return livres.toString()+ocupadas.toString();
+	}
+
+	/**
+	 * Cria um relatório com o estado de cada uma das requisições em espera do restaurante
+	 * 	@return Relatório com informações de todas as requisições em espera.
+	 */
+	public String filaDeEspera() {
+		String resposta = "Fila vazia";
+		if (requisicoesEmEspera > 0) {
+			StringBuilder emEspera = new StringBuilder("Fila de espera: \n");
+			for (Requisicao req : espera) {
+					emEspera.append(req+"\n");
+			}
+			resposta =  emEspera.toString();
+		}
+		return resposta;
+	}
+
+	/**
+	 * Acrescenta um produto ao pedido de uma mesa sendo atendida em uma requisição.
+	 * O usuário deve informar aqui o código do produto e o número da mesa. 
+	 * @param idProduto Id do Produto a ser inserido no pedido da requisição
+	 * @param idMesa Id da mesa onde a requisição está sendo atendida
+	 * @return TRUE/FALSE conforme tenha sido possível fazer a adição. Possíveis problemas são id de produto inexistente, mesa não está sendo atendida.
+	 */
+	public boolean acrescentarProduto(int idProduto, int idMesa){
+		boolean resposta = false;
+
+		Requisicao req = localizarRequisicaoEmAtendimento(idMesa);
+		Produto prod = cardapio.getProduto(idProduto);
+		if(req!=null && prod!=null){
+			resposta = req.addProduto(prod);
+		}
+
+		return resposta;
+		
+	}
+
+	/**
+	 * Retorna um cardápio exibível em String. 
+	 * @return Cardápio em string, com descrições e preços dos produtos. 
+	 */
+	public String getCardapio(){
+		return cardapio.toString();
+	}
+
+	/**
+	 * Método privado que localiza a requisição sendo atendida atualmente em uma mesa. Retorna nulo caso não exista requisição nesta mesa no momento.
+	 * @param idMesa Id da mesa que deve ser localizada. 
+	 * @return A requisição sendo atendida naquela mesa, ou nulo se não houver. 
+	 */
+	private Requisicao localizarRequisicaoEmAtendimento(int idMesa) {
+		return atendidas.stream()
+					 .filter(req -> req.ehDaMesa(idMesa) && !req.estahEncerrada())
+					 .findFirst()
+					 .orElse(null);
+	}
+
 }
