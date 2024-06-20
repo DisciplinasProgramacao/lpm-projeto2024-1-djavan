@@ -1,5 +1,4 @@
 package djavan.demo.models;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,7 @@ public class Requisicao {
     @JoinColumn(name = "idPedido", nullable = false)
 	private Pedido pedido;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@OneToMany(mappedBy = "requisicao")
 	private List<Item> produtos = new ArrayList();
 	LocalDateTime now = LocalDateTime.now();
@@ -81,30 +81,65 @@ public class Requisicao {
 		this.idRequisicao = idRequisicao;
 	}
 
+	/**
+	 * Retorna a quantidade de pessoas.
+	 *
+	 * @return a quantidade de pessoas
+	 */
 	public int getQtdPessoas() {
 		return qtdPessoas;
 	}
 
+	/**
+	 * Retorna a data e hora de entrada do cliente.
+	 *
+	 * @return a data e hora de entrada do cliente
+	 */
 	public LocalDateTime getEntradaCliente() {
 		return entradaCliente;
 	}
 
+	/**
+	 * Retorna a data e hora de saída do cliente.
+	 *
+	 * @return a data e hora de saída do cliente
+	 */
 	public LocalDateTime getSaidaCliente() {
 		return saidaCliente;
 	}
 
+	/**
+	 * Verifica se está aberta.
+	 *
+	 * @return true se estiver aberta, false caso contrário
+	 */
 	public boolean isAberta() {
 		return aberta;
 	}
 
+	/**
+	 * Retorna o cliente.
+	 *
+	 * @return o cliente
+	 */
 	public Cliente getCliente() {
 		return cliente;
 	}
 
+	/**
+	 * Retorna a mesa.
+	 *
+	 * @return a mesa
+	 */
 	public Mesa getMesa() {
 		return mesa;
 	}
 
+	/**
+	 * Retorna a lista de produtos.
+	 *
+	 * @return a lista de produtos
+	 */
 	public List<Item> getProdutos() {
 		return produtos;
 	}
