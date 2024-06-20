@@ -1,9 +1,5 @@
 package djavan.demo.models;
-import java.time.LocalDate;
 import java.util.Scanner;
-
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -75,7 +71,6 @@ public class Main {
         if (econtrou == false) {
             System.out.println("Nenhuma mesa atribuída à requisição.");
         }
-       
     }
 
     public static void exibirMenu() {
@@ -100,9 +95,8 @@ public class Main {
         System.out.println("Digite o número da mesa:");
         int mesa = teclado.nextInt(); 
         
-        Restaurante restaurante;
+        Restaurante restaurante = new Restaurante();
         restaurante.incluirItem(prod, mesa);
     }
-}   
 }
 
