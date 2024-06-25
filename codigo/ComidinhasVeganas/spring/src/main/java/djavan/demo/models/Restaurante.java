@@ -116,7 +116,7 @@ public class Restaurante {
 	private Mesa localizarMesaDisponivel(int quantPessoas) {
 		Mesa liberada = null;
 		for (int i = 0; i < quantMesas && liberada == null; i++) {
-			if (mesas[i].estahLiberada(quantPessoas))
+			if (mesas[i].mesaPodeSerOcupada(quantPessoas))
 				liberada = mesas[i];
 		}
 		return liberada;
@@ -134,7 +134,7 @@ public class Restaurante {
 										.findFirst()
 										.orElse(null);
 		if(encerrada!=null)
-			encerrada.encerrar();										
+			encerrada.finalizarReq(null);										
 		return encerrada;
 	}
 
@@ -147,7 +147,7 @@ public class Restaurante {
 		Requisicao atendida = null;
 		for (int i = 0; i < requisicoesEmEspera && atendida == null; i++) {
 			Requisicao requisicao = espera.get(i);
-			Mesa mesaLivre = localizarMesaDisponivel(requisicao.getQuantPessoas());
+			Mesa mesaLivre = localizarMesaDisponivel(requisicao.getQtdPessoas());
 			if (mesaLivre != null) {
 				atenderRequisicao(requisicao, mesaLivre);
 				retirarDaFila(i);
@@ -184,7 +184,7 @@ public class Restaurante {
 	 * @param mesa Mesa a ser alocada.
 	 */
 	private void atenderRequisicao(Requisicao requisicao, Mesa mesa) {
-		requisicao.alocarMesa(mesa);
+		requisicao.atribuirMesa(mesa);
 		atendidas.add(requisicao);
 	}
 
@@ -196,7 +196,7 @@ public class Restaurante {
 		StringBuilder livres = new StringBuilder("Mesas livres: \n");
 		StringBuilder ocupadas = new StringBuilder("Mesas em atendimento: \n");
 		for (int i = 0; i < quantMesas; i++) {
-			if (mesas[i].estahLiberada(1)) {
+			if (mesas[i].isMesaLivre(1)) {
 				livres.append(mesas[i] + "\n");
 			}
 			else {
@@ -233,9 +233,9 @@ public class Restaurante {
 		boolean resposta = false;
 
 		Requisicao req = localizarRequisicaoEmAtendimento(idMesa);
-		Produto prod = cardapio.getProduto(idProduto);
-		if(req!=null && prod!=null){
-			resposta = req.addProduto(prod);
+		Item item = cardapio.getItens().get(idProduto);
+		if(req!=null && item!=null){
+			resposta = req.addProduto(item);
 		}
 
 		return resposta;

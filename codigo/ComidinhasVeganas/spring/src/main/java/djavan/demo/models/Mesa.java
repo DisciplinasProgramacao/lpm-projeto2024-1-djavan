@@ -40,7 +40,12 @@ public class Mesa {
 		this.mesaEstaLivre = mesaEstaLivre;
 	}
 
-    /**
+    public Mesa(int capacidade) {
+    	idMesa = idMesa;
+    	this.capacidade = capacidade;
+    }
+
+	/**
     * Obtém o identificador único da mesa.
     * 
     * @return O identificador único da mesa.
@@ -72,6 +77,13 @@ public class Mesa {
         this.mesaEstaLivre = mesaEstaLivre;
     }
 
+    public boolean isMesaLivre(int numeroMesa) {
+    	if (mesaEstaLivre && mesaPodeSerOcupada(numeroMesa)) {
+    		return true;
+    	}
+    	return false;
+    }
+    
     /**
     * Método para ocupar a mesa.
     */
