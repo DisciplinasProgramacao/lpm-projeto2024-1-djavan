@@ -1,5 +1,7 @@
 package djavan.demo.controllers;
 import java.net.URI;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import djavan.demo.models.Mesa;
 import djavan.demo.models.Requisicao;
 import djavan.demo.service.RequisicaoService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -61,12 +64,12 @@ public class RequisicaoController {
      */
     @PutMapping("/{id}/encerrar")
     public ResponseEntity<Void> encerrar(@PathVariable Long id, @Valid @RequestBody Mesa mesaOcupada) {
-        Requisicao requisicaoAEncerrar = requisicaoService.findById(id);
-        if (requisicaoAEncerrar == null) {
+        try {
+            requisicaoService.encerrar(id, mesaOcupada);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-        requisicaoService.encerrar(requisicaoAEncerrar, mesaOcupada);
-        return ResponseEntity.noContent().build();
     }
 
     /**

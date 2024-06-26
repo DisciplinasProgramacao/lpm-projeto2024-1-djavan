@@ -7,6 +7,7 @@ import djavan.demo.models.Item;
 import djavan.demo.models.Mesa;
 import djavan.demo.models.Requisicao;
 import djavan.demo.repositories.RequisicaoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -40,10 +41,14 @@ public class RequisicaoService {
     @param mesaOcupada mesa referente à requisição.
     @return O objeto requisicaoEncerrada salvo com dados atualizados.*/
     @Transactional
-    public Requisicao encerrar(Requisicao requisicaoAEncerrar, Mesa mesaOcupada){ 
-        Requisicao requisicaoEncerrada = findById(requisicaoAEncerrar.getIdRequisicao());
+    public Requisicao encerrar(Long id, Mesa mesaOcupada) {
+        Optional<Requisicao> optionalRequisicao = requisicaoRepository.findById(id);
+        if (!optionalRequisicao.isPresent()) {
+            throw new EntityNotFoundException("Requisição não encontrada");
+        }
+        Requisicao requisicaoEncerrada = optionalRequisicao.get();
         requisicaoEncerrada.finalizarReq(mesaOcupada);
-        return this.requisicaoRepository.save(requisicaoEncerrada);
+        return requisicaoRepository.save(requisicaoEncerrada);
     }
 
     @Transactional
