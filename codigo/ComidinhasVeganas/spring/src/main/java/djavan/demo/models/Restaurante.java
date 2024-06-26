@@ -186,6 +186,9 @@ public class Restaurante {
 		atendidas.add(requisicao);
 	}
 
+	public List<Requisicao> getRequisicoesAtendidas(){
+		return this.atendidas;
+	}
 	/**
 	 * Cria um relatório com o estado de cada uma das mesas do restaurante (liberada/ocupada + capacidade)
 	 * @return Relatório com informações de todas as mesas do restaurante.
@@ -242,7 +245,7 @@ public class Restaurante {
 	 * Retorna um cardápio exibível em String. 
 	 * @return Cardápio em string, com descrições e preços dos produtos. 
 	 */
-	public String getCardapio(){
+	public  String getCardapio(){
 		return cardapio.toString();
 	}
 

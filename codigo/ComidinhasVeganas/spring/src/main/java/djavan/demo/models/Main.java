@@ -24,7 +24,7 @@ public class Main {
                     Cliente cliente = criarCliente(teclado); // Criar um novo cliente
                     break;
                 case 3:
-                    restaurante.exibirCardapio(); // Ver o menu
+                    restaurante.getCardapio(); // Ver o menu
                     break;
                 case 4:
                     selecionarProduto(); // Incluir produto no pedido
@@ -88,15 +88,16 @@ public class Main {
 
     public static void selecionarProduto() {
         Scanner teclado = new Scanner(System.in);
+        Restaurante restaurante = new Restaurante();
+        restaurante.getCardapio();
 
-        Restaurante.exibirCardapio();
         System.out.println("Digite o número do produto para selecionar:");
         int prod = teclado.nextInt();
         System.out.println("Digite o número da mesa:");
         int mesa = teclado.nextInt(); 
         
-        Restaurante restaurante = new Restaurante();
-        restaurante.incluirItem(prod, mesa);
+       
+        restaurante.acrescentarProduto(prod, mesa);
     }
 }
 

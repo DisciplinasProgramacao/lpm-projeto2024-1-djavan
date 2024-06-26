@@ -58,7 +58,7 @@ public class PedidoController {
     @PostMapping("/{id}/produto")
     public ResponseEntity<Pedido> adicionarProduto(@PathVariable Long id, @RequestBody Item produto) {
         try {
-            Pedido pedido = this.pedidoService.adicionarProduto(id, produto);
+            Pedido pedido = this.pedidoService.addPedidos(id, produto);
             return ResponseEntity.ok(pedido);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);

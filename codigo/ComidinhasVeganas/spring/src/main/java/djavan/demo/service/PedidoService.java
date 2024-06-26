@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import djavan.demo.models.Cliente;
+import djavan.demo.models.Item;
 import djavan.demo.models.Pedido;
 import djavan.demo.repositories.PedidoRepository;
 
@@ -54,6 +55,15 @@ public class PedidoService {
 
     public List<Pedido> findAllPedidos() {
         return this.pedidoRepository.findAll();
+    }
+
+    public Pedido addPedidos(Long id, Item produto) {
+        Pedido pedido = findById(id);
+        if (pedido != null) {
+            pedido.adicionarItem(produto);
+             return pedidoRepository.save(pedido);
+         }
+         return null;
     }
 
     // Método deve ser atualizado! Agora é Item.
