@@ -64,18 +64,16 @@ public class Restaurante {
 	 */
 	private void criarMesas() {
 		for (int i = 0; i < 4; i++) {
-			mesas[quantMesas] = new Mesa(4);
+			mesas[quantMesas] = new Mesa(quantMesas, 4, true);
 			quantMesas++;
 		}
 		for (int i = 0; i < 4; i++) {
-			mesas[quantMesas] = new Mesa(6);
+			mesas[quantMesas] = new Mesa(quantMesas, 6, true);
 			quantMesas++;
-
 		}
 		for (int i = 0; i < 2; i++) {
-			mesas[quantMesas] = new Mesa(8);
+			mesas[quantMesas] = new Mesa(quantMesas, 8, true);
 			quantMesas++;
-
 		}
 	}
 
@@ -229,17 +227,15 @@ public class Restaurante {
 	 * @param idMesa Id da mesa onde a requisição está sendo atendida
 	 * @return TRUE/FALSE conforme tenha sido possível fazer a adição. Possíveis problemas são id de produto inexistente, mesa não está sendo atendida.
 	 */
-	public boolean acrescentarProduto(int idProduto, int idMesa){
-		boolean resposta = false;
-
+	public Item acrescentarProduto(int idProduto, int idMesa){
 		Requisicao req = localizarRequisicaoEmAtendimento(idMesa);
 		Item item = cardapio.getItens().get(idProduto);
 		if(req!=null && item!=null){
-			resposta = req.addProduto(item);
+			try{item = req.adicionarItem(item);}
+			catch(Exception e){System.out.println("Erro: " + e.getMessage());}
 		}
 
-		return resposta;
-		
+		return item;
 	}
 
 	/**

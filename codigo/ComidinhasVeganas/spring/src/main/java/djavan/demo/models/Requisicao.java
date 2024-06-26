@@ -3,6 +3,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +18,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = Requisicao.TABLE_NAME)
-public class Requisicao {
+public class Requisicao extends Throwable {
 
 	public static final String TABLE_NAME = "requisicao";
 
@@ -182,8 +184,12 @@ public class Requisicao {
 	 * Adiciona um pedido à lista de pedidos da requisição.
 	 * @param cardapio cardápio do pedido.
 	 */
-	public void adicionarProduto(int idProd) {
-		pedido.adicionarItem(idProd);
+	public Item adicionarItem(Item item) throws Exception {
+		pedido.adicionarItem(item);
+		for(int i = 0; i <= pedido.getItens().size(); i++){
+			if(item.getId() == pedido.getItens().get(i).getId()) return item;
+		}
+		throw new Exception("Item " + item.getNome() + "nao adicionado.");
 	}
 
 	/**
@@ -200,5 +206,16 @@ public class Requisicao {
 	 */
 	public double calcularValorPorCliente() {
 		return pedido.getItens().stream().mapToDouble(Item::getValue).sum();
+	}
+
+	public boolean ehDaMesa(int idPassado) {
+		if (idPassado == mesa.getIdMesa()) {
+			return true;
+		}else return false;
+	}
+
+	public boolean estahEncerrada() {
+		if(aberta == true) return true;
+		else return false;
 	}
 }

@@ -19,9 +19,9 @@ public enum Item {
 	private String nome;
 	private Double value;
 
+	Item(){}
 
 	Item(Integer id, String nome, Double value) {
-
 		this.id = id;
 		this.nome = nome;
 		this.value = value;

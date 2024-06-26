@@ -20,8 +20,6 @@ public class Pedido {
 	
 	private List<Item> itens = new ArrayList<>();
 	
-	private Item item; // Aparentemente, um pedido pode ter vários itens, mas a classe atual só possui um item. Podemos modificar isso.
-	
 	private double valorTotal;
 
 	private boolean aberto;
@@ -80,14 +78,6 @@ public class Pedido {
 	public void setItens(List<Item> itens) {
 		this.itens = itens;
 	}
-	public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
 	
 	public boolean isAberto() {
 		return aberto;

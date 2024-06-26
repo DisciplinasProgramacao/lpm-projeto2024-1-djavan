@@ -21,12 +21,6 @@ public class PedidoFechado extends Pedido {
         this.itensPedido = new HashMap<>();
     }
 
-    // Sobrescreve o método setItem para impedir a adição direta de itens.
-    @Override
-    public void setItem(Item item){
-        throw new UnsupportedOperationException("Use o método adicionarItem(Item item, int quantidade) para adicionar itens.");
-    }
-
     /**
      * Adiciona uma quantidade específica de um item ao pedido, respeitando as restrições.
      * @param item O item a ser adicionado.

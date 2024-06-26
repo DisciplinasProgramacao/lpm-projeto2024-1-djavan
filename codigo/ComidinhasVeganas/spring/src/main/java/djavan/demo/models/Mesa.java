@@ -40,11 +40,6 @@ public class Mesa {
 		this.mesaEstaLivre = mesaEstaLivre;
 	}
 
-    public Mesa(int capacidade) {
-    	idMesa = idMesa;
-    	this.capacidade = capacidade;
-    }
-
 	/**
     * Obtém o identificador único da mesa.
     * 
