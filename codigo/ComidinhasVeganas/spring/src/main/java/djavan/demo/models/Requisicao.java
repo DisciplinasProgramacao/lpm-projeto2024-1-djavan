@@ -80,6 +80,10 @@ public class Requisicao extends Throwable {
 		this.idRequisicao = idRequisicao;
 	}
 
+	public Pedido getPedido() {
+		return pedido;
+	}
+
 	/**
 	 * Retorna a quantidade de pessoas.
 	 *

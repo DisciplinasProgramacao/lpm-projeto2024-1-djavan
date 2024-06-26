@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import djavan.demo.models.Item;
 import djavan.demo.models.Mesa;
 import djavan.demo.models.Requisicao;
 import djavan.demo.service.RequisicaoService;
@@ -73,19 +74,20 @@ public class RequisicaoController {
     }
 
     /**
-     * Endpoint para adicionar um produto em uma requisição.
-
-    Faltam alguns métodos na Model de Pedido para rodar isso corretamente! 
-
-    @PutMapping("/{id}/adicionar-pedido")
-    public ResponseEntity<Void> adicionarProduto(@PathVariable Long id, @Valid @RequestBody Item item) {
-        Requisicao requisicao = requisicaoService.findById(id);
-        if (requisicao == null) {
+     * Adiciona um item a uma requisição existente.
+     *
+     * @param id o ID da requisição à qual o item será adicionado
+     * @param itemASerAdicionado o item que será adicionado à requisição
+     * @return uma resposta HTTP contendo a requisição atualizada se o item for adicionado com sucesso;
+     */
+    @PutMapping("/{id}/adicionar-item")
+    public ResponseEntity<Requisicao> adicionarItem(@PathVariable Long id, @Valid @RequestBody Item itemASerAdicionado) {
+        try {
+            Requisicao requisicaoAtualizada = requisicaoService.adicionarProduto(id, itemASerAdicionado);
+            return ResponseEntity.ok(requisicaoAtualizada);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-        requisicaoService.pedido.adicionarItem(requisicao);
-        return ResponseEntity.noContent().build();
     }
-*/
 
 }
