@@ -51,11 +51,23 @@ public class RequisicaoService {
         return requisicaoRepository.save(requisicaoEncerrada);
     }
 
+        /**
+     * Adiciona um produto (Item) a uma requisição (Requisicao).
+     *
+     * @param idRequisicao o ID da requisição à qual o item deve ser adicionado
+     * @param itemASerAdicionado o item que deve ser adicionado à requisição
+     * @return a requisição atualizada com o item adicionado
+     * @throws EntityNotFoundException se a requisição com o ID fornecido não for encontrada
+     */
     @Transactional
-    public Requisicao adicionarProduto(Requisicao requisicao, Item itemASerAdicionado){ 
-        // Requisicao requisicao = findById(requisicao.getIdRequisicao());
-        // requisicao.pedido.adicionarItem(itemASerAdicionado);
-        return this.requisicaoRepository.save(requisicao);
+    public Requisicao adicionarProduto(Long idRequisicao, Item itemASerAdicionado) {
+        Optional<Requisicao> optionalRequisicao = requisicaoRepository.findById(idRequisicao);
+        if (!optionalRequisicao.isPresent()) {
+            throw new EntityNotFoundException("Requisição não encontrada");
+        }
+        Requisicao requisicaoASerAtualizada = optionalRequisicao.get();
+        requisicaoASerAtualizada.getPedido().adicionarItem(itemASerAdicionado);
+        return requisicaoRepository.save(requisicaoASerAtualizada);
     }
 
 
