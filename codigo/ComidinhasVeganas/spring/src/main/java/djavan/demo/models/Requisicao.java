@@ -178,9 +178,10 @@ public class Requisicao extends Throwable {
 	 * Finaliza a requisição e libera a mesa ocupada.
 	 * @param mesa mesa a ser liberada.
 	 */
-	public void finalizarReq(Mesa mesa) {
+	public void finalizarReq() {
 		saidaCliente = LocalDateTime.now();
 		aberta = false;
+		//pedido.fechar();
 		mesa.desocupar();
 	}
 

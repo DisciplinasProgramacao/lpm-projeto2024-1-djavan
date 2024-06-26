@@ -132,7 +132,7 @@ public class Restaurante {
 										.findFirst()
 										.orElse(null);
 		if(encerrada!=null)
-			encerrada.finalizarReq(null);										
+			encerrada.finalizarReq();										
 		return encerrada;
 	}
 
@@ -232,7 +232,7 @@ public class Restaurante {
 	 */
 	public Item acrescentarProduto(int idProduto, int idMesa){
 		Requisicao req = localizarRequisicaoEmAtendimento(idMesa);
-		Item item = cardapio.getItens().get(idProduto);
+		Item item = cardapio.getProduto(idProduto);
 		if(req!=null && item!=null){
 			try{item = req.adicionarItem(item);}
 			catch(Exception e){System.out.println("Erro: " + e.getMessage());}

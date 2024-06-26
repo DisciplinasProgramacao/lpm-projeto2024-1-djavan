@@ -1,6 +1,12 @@
 package djavan.demo.models;
 import java.util.Scanner;
 
+//criar requisicao
+//tentar alocar requisicao
+//incluir produto na requisicao
+//fechar requisicao e mostrar conta
+//deixar escolher entre aberto e fechado
+
 public class Main {
     public static void main(String[] args) {
 
@@ -11,22 +17,22 @@ public class Main {
         do {
             exibirMenu();
             System.out.print("Escolha uma opção: ");
-            opcao = teclado.nextInt();
+            opcao = Integer.parseInt(teclado.nextLine());
             
             Mesa[] mesas;
             Restaurante restaurante = new Restaurante();
             Cardapio cardapio;
             switch (opcao) {
-                case 1:
+                case 4:
                     finalizarRequisicao(); // Finaliza a requisição e desocupa a mesa
                     break;
-                case 2:
+                case 1:
                     Cliente cliente = criarCliente(teclado); // Criar um novo cliente
                     break;
-                case 3:
+                case 2:
                     restaurante.getCardapio(); // Ver o menu
                     break;
-                case 4:
+                case 3:
                     selecionarProduto(); // Incluir produto no pedido
                     // tem que passar um produto
                     break;
@@ -43,9 +49,9 @@ public class Main {
      * @return
      */
     public static Cliente criarCliente(Scanner teclado) {
-        Cliente cliente = new Cliente();
         System.out.print("Digite o nome do cliente: ");
         String nomeCliente = teclado.nextLine();
+        Cliente cliente = new Cliente();
         cliente.setNome(nomeCliente);
         System.out.println("Cliente criado com sucesso: " + cliente.getNome());
         return cliente;
@@ -57,20 +63,15 @@ public class Main {
         boolean econtrou = false;
         System.out.println("Qual o numero da sua Mesa?");
         int idMesa = teclado.nextInt();
-        for(int i = 0; i <= restaurante.getRequisicoesAtendidas().size(); i++){
-            Requisicao requisicao = restaurante.getRequisicoesAtendidas().get(i);
-            if (requisicao.getMesa().getIdMesa() == idMesa) {
-                if (requisicao.getMesa() != null) {
-                    requisicao.finalizarReq(requisicao.getMesa()); // Finalizar requisição e desocupar a mesa
-                    System.out.println("Requisição finalizada com sucesso.");
-                    econtrou = true;
-                    break;
-                } 
-            }
+        Requisicao requisicao = restaurante.localizarRequisicao(idMesa);
+        try{
+                requisicao.finalizarReq(); // Finalizar requisição e desocupar a mesa
+                System.out.println("Requisição finalizada com sucesso.");
+        }catch(NullPointerException ne){
+                System.out.println("Não temos requisição na mesa "+idMesa);
         }
-        if (econtrou == false) {
-            System.out.println("Nenhuma mesa atribuída à requisição.");
-        }
+         
+        
     }
 
     public static void exibirMenu() {

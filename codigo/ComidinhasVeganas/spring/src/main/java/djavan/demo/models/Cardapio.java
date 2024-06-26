@@ -27,8 +27,9 @@ public class Cardapio {
 		this.id = id;
 	}
 
-	public List<Item> getItens() {
-		return itens;
+	public Item getProduto(int idprod) {
+
+		return itens.stream().filter(pr -> pr.getId() == id).findFirst().orElse(null);
 	}
 	
 	public List<Item> getCardapio(){

@@ -25,7 +25,7 @@ public class CardapioFechado extends Cardapio {
         if (!itensPermitidos.contains(item)) {
             throw new IllegalArgumentException("Item " + item.getNome() + " não permitido no cardápio fechado.");
         }
-        getItens().add(item);
+       // getItens().add(item);
     }
 }
 
