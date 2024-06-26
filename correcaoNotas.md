@@ -52,3 +52,29 @@ Estrutura Spring - Mariana
 
 Controller Mesa - ok, sem operação para alocar/liberar - Mariana - 8
 
+## Sprint 3 - Até 05/junho
+  - Nota de grupo (6 pontos)
+    - Modelo atualizado - menu fechado
+  
+  - Nota individual (14 pontos)	
+    - Implementações menu fechado e app
+    - Correções anteriores
+	
+### Revisão 12/06
+Diagrama sem menu/pedido fechado - Todos - 0 
+
+Main sem compilar por erros de sintaxe/chamadas incorretas. - Allan - 8,4
+
+Pedido controller: hora do pedido? E como inserir um produto no pedido? - Laura - 9
+
+Requisicao controller: alocar mesa? inserir produto? - Mariana - 9
+
+Cardápio com o mesmo problema - Gabriel - 
+
+Pedido com muitos problemas: referência para a requisição, setId, hora, Cardápio, getProdutos - Gabriel - 
+
+Produto não tem relação com cardápio. precisa ter um preço - Gabriel - 0
+
+Requisição não precisa ter um getPedido. E está com um método usando classe Item, que não existe. - Arthur - 7
+
+Restaurante parado na sprint anterior (já sabíamos)
