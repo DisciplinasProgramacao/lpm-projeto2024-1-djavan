@@ -61,7 +61,7 @@ Controller Mesa - ok, sem operação para alocar/liberar - Mariana - 8
     - Correções anteriores
 	
 ### Revisão 12/06
-Diagrama sem menu/pedido fechado - Todos - 0 
+Diagrama sem menu/pedido fechado - Todos - **3 REVISADO**
 
 Main sem compilar por erros de sintaxe/chamadas incorretas. - Allan - 8,4
 
@@ -78,3 +78,24 @@ Produto não tem relação com cardápio. precisa ter um preço - Gabriel - 0
 Requisição não precisa ter um getPedido. E está com um método usando classe Item, que não existe. - Arthur - 7
 
 Restaurante parado na sprint anterior (já sabíamos)
+
+
+## Sprint 4 - Apresentação em 26/06
+  - Nota de grupo 4,5/6 pontos
+	- Modelo atualizado - ok 
+	- Apresentação - infelizmente, ruim: muitos conflitos de código e não rodou nem uma versão antiga.
+	
+  - Nota individual (14 pontos)
+    - Ajustes do último quadro "Projeto GitHub"
+    - Correções das sprints anteriores
+	
+### Requisitos/Cartões
+Pedido - sem método para inserir produto nem calcular valor
+
+Pedido fechado - itens permitidos não é parâmetro, é regra. "itensPedido" seria um cardápio? Set itens é incorreto e perigoso.
+
+Requisicao - dando get itens e fazendo lógica do pedido. exceção genérica. adicionar item com for(?!). não fecha o pedido. 
+
+Controllers/Models - Requisicao com método incorreto. Update pedido parcial.
+
+Restaurante - sem streams para cliente e mesa. dando get itens no cardápio
